@@ -169,19 +169,19 @@
 
     <!-- ASSIGNMENT MODAL -->
     <div id="assignment-modal-overlay" class="fixed inset-0 z-[120] bg-black/50 backdrop-blur-sm hidden flex items-center justify-center p-4 opacity-0 transition-opacity" onclick="window.closeAssignmentModal(event)">
-        <div class="modal-content bg-white dark:bg-gray-900 rounded-3xl shadow-2xl max-w-xl w-full overflow-hidden transform scale-95 opacity-0 transition-all p-12">
-            <h3 id="modal-form-title" class="text-3xl font-bold text-gray-900 dark:text-white mb-10">Add Assignment</h3>
+        <div class="modal-content bg-white dark:bg-gray-900 rounded-2xl shadow-2xl max-w-md w-full overflow-hidden transform scale-95 opacity-0 transition-all p-8">
+            <h3 id="modal-form-title" class="text-xl font-bold text-gray-900 dark:text-white mb-6">Add Assignment</h3>
             <form id="assignment-form" onsubmit="window.handleAssignmentSubmit(event)">
                 <input type="hidden" id="task-id">
-                <div class="space-y-8">
+                <div class="space-y-5">
                     <div>
-                        <label class="block text-sm font-bold text-gray-500 uppercase mb-4 tracking-widest">Title</label>
-                        <input type="text" id="task-title" required class="w-full rounded-2xl border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white p-5 text-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none transition-shadow" placeholder="e.g. Midterm 2">
+                        <label class="block text-xs font-semibold text-gray-500 uppercase mb-2">Title</label>
+                        <input type="text" id="task-title" required class="w-full rounded-lg border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white p-3 text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none" placeholder="e.g. Midterm 2">
                     </div>
-                    <div class="grid grid-cols-2 gap-8">
+                    <div class="grid grid-cols-2 gap-5">
                         <div>
-                            <label class="block text-sm font-bold text-gray-500 uppercase mb-4 tracking-widest">Course</label>
-                            <select id="task-course" class="w-full rounded-2xl border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white p-5 text-lg focus:ring-2 focus:ring-indigo-500 transition-shadow">
+                            <label class="block text-xs font-semibold text-gray-500 uppercase mb-2">Course</label>
+                            <select id="task-course" class="w-full rounded-lg border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white p-3 text-sm focus:ring-2 focus:ring-indigo-500">
                                 <option value="AMS 261">AMS 261</option>
                                 <option value="CME 304">CME 304</option>
                                 <option value="ESG 111">ESG 111</option>
@@ -190,8 +190,8 @@
                             </select>
                         </div>
                         <div>
-                            <label class="block text-sm font-bold text-gray-500 uppercase mb-4 tracking-widest">Type</label>
-                            <select id="task-type" class="w-full rounded-2xl border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white p-5 text-lg focus:ring-2 focus:ring-indigo-500 transition-shadow">
+                            <label class="block text-xs font-semibold text-gray-500 uppercase mb-2">Type</label>
+                            <select id="task-type" class="w-full rounded-lg border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white p-3 text-sm focus:ring-2 focus:ring-indigo-500">
                                 <option value="Exam">Exam</option>
                                 <option value="Homework">Homework</option>
                                 <option value="Lab">Lab</option>
@@ -200,17 +200,17 @@
                         </div>
                     </div>
                     <div>
-                        <label class="block text-sm font-bold text-gray-500 uppercase mb-4 tracking-widest">Due Date</label>
-                        <input type="date" id="task-date" required class="w-full rounded-2xl border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white p-5 text-lg focus:ring-2 focus:ring-indigo-500 transition-shadow">
+                        <label class="block text-xs font-semibold text-gray-500 uppercase mb-2">Due Date</label>
+                        <input type="date" id="task-date" required class="w-full rounded-lg border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white p-3 text-sm focus:ring-2 focus:ring-indigo-500">
                     </div>
                     <div>
-                        <label class="block text-sm font-bold text-gray-500 uppercase mb-4 tracking-widest">Notes (Optional)</label>
-                        <textarea id="task-notes" rows="4" class="w-full rounded-2xl border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white p-5 text-lg focus:ring-2 focus:ring-indigo-500 resize-none transition-shadow" placeholder="Add details here..."></textarea>
+                        <label class="block text-xs font-semibold text-gray-500 uppercase mb-2">Notes (Optional)</label>
+                        <textarea id="task-notes" rows="3" class="w-full rounded-lg border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white p-3 text-sm focus:ring-2 focus:ring-indigo-500 resize-none" placeholder="Add details here..."></textarea>
                     </div>
                 </div>
-                <div class="mt-12 flex justify-end gap-6">
-                    <button type="button" onclick="window.closeAssignmentModal(null, true)" class="px-8 py-4 text-lg font-bold text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-2xl transition-colors">Cancel</button>
-                    <button type="submit" class="px-8 py-4 text-lg font-bold text-white bg-indigo-600 hover:bg-indigo-700 rounded-2xl shadow-lg transition-transform hover:scale-105">Save Task</button>
+                <div class="mt-8 flex justify-end gap-3">
+                    <button type="button" onclick="window.closeAssignmentModal(null, true)" class="px-5 py-2.5 text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors">Cancel</button>
+                    <button type="submit" class="px-5 py-2.5 text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 rounded-lg shadow transition-colors">Save Task</button>
                 </div>
             </form>
         </div>
@@ -1085,25 +1085,20 @@
                         if (diffDays === 0) daysText = "Today";
                         if (diffDays === 1) daysText = "1 day left";
 
-                        examHtml = `<div class="mt-1 px-1.5 py-0.5 rounded text-[10px] font-bold ${bgClass} truncate text-center leading-tight shadow-sm" title="${next.name} on ${dateStr}">
+                        examHtml = `<div class="mt-0.5 px-1 py-0.5 rounded text-[9px] font-bold ${bgClass} truncate text-center leading-tight" title="${next.name} on ${dateStr}">
                             ${isUrgent ? '!' : ''} ${next.name}: ${daysText}
                         </div>`;
                     }
                 }
 
-                card.className = `absolute inset-x-2 rounded-xl border-l-4 p-3 flex flex-col overflow-hidden event-card cursor-pointer ${colorSet.light} ${colorSet.dark} justify-between shadow-sm`;
+                card.className = `absolute inset-x-1 rounded border-l-4 p-2 text-xs flex flex-col overflow-hidden event-card cursor-pointer ${colorSet.light} ${colorSet.dark} justify-between`;
                 card.style.top = `${(startMin / TOTAL_MINUTES) * 100}%`;
-                // Add a small 4px subtraction to leave a tiny gap between back-to-back classes
-                card.style.height = `calc(${heightPercent}% - 4px)`;
+                // No min-height to allow squishing slightly if needed, but height is % based
+                // h-full on container ensures it fits
+                card.style.height = `${heightPercent}%`;
                 card.onclick = () => window.openCourseModal(encodeURIComponent(JSON.stringify(event)));
                 
-                card.innerHTML = `
-                    <div class="flex flex-col h-full">
-                        <div class="font-bold leading-tight mb-1.5 text-sm truncate pointer-events-none">${event.title}</div>
-                        <div class="font-semibold opacity-90 mb-1 inline-block bg-white/50 dark:bg-black/30 px-1.5 py-0.5 rounded text-[11px] leading-none pointer-events-none self-start shadow-sm">${formatTime(event.start)} - ${formatTime(event.end)}</div>
-                        ${examHtml}
-                        <div class="mt-auto font-medium opacity-80 truncate text-xs leading-tight flex items-center gap-1 pointer-events-none pt-2">${event.loc}</div>
-                    </div>`;
+                card.innerHTML = `<div class="font-bold leading-tight mb-0.5 text-xs truncate pointer-events-none">${event.title}</div><div class="font-bold opacity-100 mb-1 inline-block bg-white/40 dark:bg-black/20 px-1 rounded text-[10px] pointer-events-none">${formatTime(event.start)} - ${formatTime(event.end)}</div>${examHtml}<div class="mt-auto font-medium opacity-75 truncate text-[10px] md:text-xs flex items-center gap-1 pointer-events-none">${event.loc}</div>`;
                 container.appendChild(card);
             });
         }
