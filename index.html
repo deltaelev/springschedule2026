@@ -24,12 +24,6 @@
         body { font-family: 'Inter', sans-serif; }
         .font-mono { font-family: 'JetBrains Mono', monospace; }
         
-        /* Custom Scrollbar for the schedule area */
-        .custom-scroll::-webkit-scrollbar { width: 6px; height: 6px; }
-        .custom-scroll::-webkit-scrollbar-track { background: transparent; }
-        .custom-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
-        .dark .custom-scroll::-webkit-scrollbar-thumb { background-color: #4b5563; }
-        
         .event-card { transition: transform 0.15s, box-shadow 0.15s, z-index 0s; z-index: 10; overflow: hidden; }
         .event-card:hover { transform: scale(1.02); z-index: 50; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.15); height: auto !important; min-height: 100%; }
         
@@ -45,13 +39,13 @@
         input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
     </style>
 </head>
-<body class="bg-gray-50 text-gray-800 dark:bg-gray-900 dark:text-gray-100 min-h-screen flex flex-col transition-colors duration-200 overflow-hidden">
+<body class="bg-gray-50 text-gray-800 dark:bg-gray-900 dark:text-gray-100 min-h-screen flex flex-col transition-colors duration-200">
 
-    <!-- Header -->
-    <header class="bg-white dark:bg-gray-850 border-b border-gray-200 dark:border-gray-700 px-6 py-4 flex justify-between items-center shadow-sm z-50 transition-colors duration-200 h-[110px] flex-shrink-0">
+    <!-- Header (Z-Index increased to 60) -->
+    <header class="bg-white dark:bg-gray-850 border-b border-gray-200 dark:border-gray-700 px-6 pt-6 pb-4 flex justify-between items-center shadow-sm sticky top-0 z-[60] transition-colors duration-200 h-[110px]">
         <div class="flex flex-col justify-center h-full space-y-1">
             <h1 id="page-title" class="text-3xl font-bold text-gray-900 dark:text-white leading-tight">My Fall Schedule</h1>
-            <div class="flex items-center gap-3 text-sm">
+            <div class="flex items-center gap-3 text-sm mt-1">
                 <p id="current-date" class="font-medium text-indigo-600 dark:text-indigo-400"></p>
                 <span class="text-gray-300 dark:text-gray-600 hidden sm:inline">|</span>
                 <p id="today-classes" class="text-gray-500 dark:text-gray-400 truncate max-w-[300px] sm:max-w-md hidden sm:block">Loading...</p>
@@ -70,13 +64,14 @@
         </div>
     </header>
 
-    <!-- Main Content -->
-    <main class="flex-1 w-full max-w-7xl mx-auto p-4 md:p-6 flex flex-col gap-4 h-[calc(100vh-110px)] overflow-hidden">
+    <!-- Main Content (Removed h-[calc] and overflow-hidden to allow natural page scroll) -->
+    <main class="flex-1 w-full max-w-7xl mx-auto p-4 md:p-6 flex flex-col gap-8">
         
-        <!-- Visual Schedule Section (Fixed Layout Structure) -->
-        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden flex flex-col transition-colors duration-200 flex-1 min-h-0">
+        <!-- Visual Schedule Section (Dynamic height with breathing room) -->
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 flex flex-col transition-colors duration-200 min-h-[750px]">
+            
             <!-- Card Title -->
-            <div class="p-3 border-b border-gray-100 dark:border-gray-700 bg-gray-50 dark:bg-gray-850 flex justify-between items-center flex-shrink-0">
+            <div class="p-4 border-b border-gray-100 dark:border-gray-700 bg-gray-50 dark:bg-gray-850 flex justify-between items-center rounded-t-xl">
                 <h2 class="font-semibold text-gray-700 dark:text-gray-200 flex items-center gap-2">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
                     Weekly Overview
@@ -84,11 +79,9 @@
                 <div id="live-indicator-status" class="text-xs font-medium text-red-500 flex items-center gap-1 animate-pulse"><span class="w-2 h-2 bg-red-500 rounded-full"></span> LIVE</div>
             </div>
 
-            <!-- Fixed Days Header (Never Scrolls) -->
-            <div class="flex w-full border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-850 flex-shrink-0 z-[55] relative">
-                 <!-- Spacer for time column -->
-                 <div class="w-16 flex-shrink-0 border-r border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800"></div>
-                 <!-- Days Grid -->
+            <!-- Fixed Days Header (Sticks to page scroll at 110px down, z-[55] sits below main header) -->
+            <div class="flex w-full border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-850 sticky top-[110px] z-[55] shadow-sm">
+                 <div class="w-16 flex-shrink-0 border-r border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-850"></div>
                  <div class="flex-1 grid grid-cols-5 h-10 items-center">
                     <div class="text-center font-semibold text-gray-700 dark:text-gray-300 text-sm">Mon</div>
                     <div class="text-center font-semibold text-gray-700 dark:text-gray-300 text-sm">Tue</div>
@@ -98,64 +91,61 @@
                  </div>
             </div>
             
-            <!-- Full-View Schedule Area (No Scrolling) -->
-            <div class="flex-1 relative">
-                <div class="w-full h-full flex">
-                    <!-- Time Column -->
-                    <div class="w-16 flex-shrink-0 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 relative">
-                        <div id="time-labels" class="relative h-full"></div>
-                    </div>
-                    <!-- Schedule Grid -->
-                    <div class="flex-1 relative bg-white dark:bg-gray-800">
-                        <div class="grid grid-cols-5 h-full relative" id="schedule-container">
-                            <div class="absolute inset-0 pointer-events-none grid grid-rows-[repeat(11,1fr)] w-full h-full z-0">
-                                <!-- Grid Lines -->
-                                <div class="border-b border-gray-100 dark:border-gray-700 w-full"></div><div class="border-b border-gray-100 dark:border-gray-700 w-full"></div><div class="border-b border-gray-100 dark:border-gray-700 w-full"></div><div class="border-b border-gray-100 dark:border-gray-700 w-full"></div><div class="border-b border-gray-100 dark:border-gray-700 w-full"></div><div class="border-b border-gray-100 dark:border-gray-700 w-full"></div><div class="border-b border-gray-100 dark:border-gray-700 w-full"></div><div class="border-b border-gray-100 dark:border-gray-700 w-full"></div><div class="border-b border-gray-100 dark:border-gray-700 w-full"></div><div class="border-b border-gray-100 dark:border-gray-700 w-full"></div><div class="border-b border-gray-100 dark:border-gray-700 w-full"></div>
-                            </div>
-                            <div id="current-time-line" class="absolute w-full border-t-2 border-red-500 z-25 hidden"></div>
-                            <div class="relative border-r border-gray-100 dark:border-gray-700 h-full hover:bg-gray-50/30 dark:hover:bg-gray-700/30 transition-colors" id="col-mon"></div>
-                            <div class="relative border-r border-gray-100 dark:border-gray-700 h-full hover:bg-gray-50/30 dark:hover:bg-gray-700/30 transition-colors" id="col-tue"></div>
-                            <div class="relative border-r border-gray-100 dark:border-gray-700 h-full hover:bg-gray-50/30 dark:hover:bg-gray-700/30 transition-colors" id="col-wed"></div>
-                            <div class="relative border-r border-gray-100 dark:border-gray-700 h-full hover:bg-gray-50/30 dark:hover:bg-gray-700/30 transition-colors" id="col-thu"></div>
-                            <div class="relative h-full hover:bg-gray-50/30 dark:hover:bg-gray-700/30 transition-colors" id="col-fri"></div>
+            <!-- Full-View Schedule Area -->
+            <div class="flex-1 relative flex rounded-b-xl overflow-hidden">
+                <!-- Time Column -->
+                <div class="w-16 flex-shrink-0 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 relative">
+                    <div id="time-labels" class="relative h-full"></div>
+                </div>
+                <!-- Schedule Grid -->
+                <div class="flex-1 relative bg-white dark:bg-gray-800">
+                    <div class="grid grid-cols-5 h-full relative" id="schedule-container">
+                        <div class="absolute inset-0 pointer-events-none grid grid-rows-[repeat(11,1fr)] w-full h-full z-0">
+                            <!-- Grid Lines -->
+                            <div class="border-b border-gray-100 dark:border-gray-700 w-full"></div><div class="border-b border-gray-100 dark:border-gray-700 w-full"></div><div class="border-b border-gray-100 dark:border-gray-700 w-full"></div><div class="border-b border-gray-100 dark:border-gray-700 w-full"></div><div class="border-b border-gray-100 dark:border-gray-700 w-full"></div><div class="border-b border-gray-100 dark:border-gray-700 w-full"></div><div class="border-b border-gray-100 dark:border-gray-700 w-full"></div><div class="border-b border-gray-100 dark:border-gray-700 w-full"></div><div class="border-b border-gray-100 dark:border-gray-700 w-full"></div><div class="border-b border-gray-100 dark:border-gray-700 w-full"></div><div class="border-b border-gray-100 dark:border-gray-700 w-full"></div>
                         </div>
+                        <div id="current-time-line" class="absolute w-full border-t-2 border-red-500 z-25 hidden"></div>
+                        <div class="relative border-r border-gray-100 dark:border-gray-700 h-full hover:bg-gray-50/30 dark:hover:bg-gray-700/30 transition-colors" id="col-mon"></div>
+                        <div class="relative border-r border-gray-100 dark:border-gray-700 h-full hover:bg-gray-50/30 dark:hover:bg-gray-700/30 transition-colors" id="col-tue"></div>
+                        <div class="relative border-r border-gray-100 dark:border-gray-700 h-full hover:bg-gray-50/30 dark:hover:bg-gray-700/30 transition-colors" id="col-wed"></div>
+                        <div class="relative border-r border-gray-100 dark:border-gray-700 h-full hover:bg-gray-50/30 dark:hover:bg-gray-700/30 transition-colors" id="col-thu"></div>
+                        <div class="relative h-full hover:bg-gray-50/30 dark:hover:bg-gray-700/30 transition-colors" id="col-fri"></div>
                     </div>
                 </div>
             </div>
-        </div>
-
-        <!-- Assignments Toggle (To save space) -->
-        <div class="flex justify-end px-2 flex-shrink-0">
-             <button onclick="document.getElementById('calendar-section').classList.toggle('hidden')" class="text-xs text-indigo-600 dark:text-indigo-400 hover:underline">Toggle Calendar View</button>
         </div>
 
         <!-- CALENDAR SECTION -->
-        <div id="calendar-section" class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden transition-colors duration-200 hidden md:block flex-shrink-0" style="height: 220px; min-height: 220px;">
-            <div class="p-3 border-b border-gray-100 dark:border-gray-700 bg-gray-50 dark:bg-gray-850 flex justify-between items-center h-10">
+        <div id="calendar-section" class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden transition-colors duration-200">
+            <div class="p-4 border-b border-gray-100 dark:border-gray-700 bg-gray-50 dark:bg-gray-850 flex justify-between items-center">
                 <div class="flex items-center gap-4">
-                    <h2 class="font-semibold text-gray-700 dark:text-gray-200 flex items-center gap-2 text-sm">
-                        Assignments
+                    <h2 class="font-semibold text-gray-700 dark:text-gray-200 flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                        </svg>
+                        Assignments Calendar
                     </h2>
-                    <div class="flex items-center bg-white dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600 p-0.5">
+                    <div class="flex items-center bg-white dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600 p-1">
                         <button onclick="window.changeMonth(-1)" class="p-1 hover:bg-gray-100 dark:hover:bg-gray-600 rounded text-gray-500 dark:text-gray-400">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg>
                         </button>
-                        <span id="calendar-month-year" class="px-2 text-xs font-bold text-gray-700 dark:text-gray-200 min-w-[100px] text-center">Loading...</span>
+                        <span id="calendar-month-year" class="px-3 text-sm font-bold text-gray-700 dark:text-gray-200 min-w-[140px] text-center">Loading...</span>
                         <button onclick="window.changeMonth(1)" class="p-1 hover:bg-gray-100 dark:hover:bg-gray-600 rounded text-gray-500 dark:text-gray-400">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
                         </button>
                     </div>
                 </div>
-                <button onclick="window.openAssignmentModal()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-2 py-1 rounded text-xs font-medium transition-colors shadow flex items-center gap-1">
-                    + Task
+                <button onclick="window.openAssignmentModal()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-1.5 rounded-lg text-sm font-medium transition-colors shadow flex items-center gap-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
+                    Add Task
                 </button>
             </div>
             
-            <div class="p-2 h-full overflow-y-auto">
-                <div class="grid grid-cols-7 mb-1 text-center text-[10px] font-semibold text-gray-400 uppercase tracking-wide">
+            <div class="p-4">
+                <div class="grid grid-cols-7 mb-2 text-center text-xs font-semibold text-gray-400 uppercase tracking-wide">
                     <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
                 </div>
-                <div id="calendar-grid" class="grid grid-cols-7 gap-1"></div>
+                <div id="calendar-grid" class="grid grid-cols-7 gap-2"></div>
             </div>
         </div>
 
@@ -1031,7 +1021,7 @@
                 for (let h = START_HOUR; h < END_HOUR; h++) {
                     const label = document.createElement('div');
                     const marginTop = h === START_HOUR ? '-mt-0' : '-mt-2';
-                    label.className = `absolute w-full text-right pr-1 sm:pr-2 text-[10px] sm:text-xs text-gray-400 font-medium ${marginTop}`;
+                    label.className = `absolute w-full text-right pr-2 text-xs text-gray-400 font-medium ${marginTop}`;
                     label.style.top = `${((h - START_HOUR) * 60 / TOTAL_MINUTES) * 100}%`;
                     label.innerText = `${h > 12 ? h - 12 : h} ${h >= 12 ? 'PM' : 'AM'}`;
                     timeContainer.appendChild(label);
@@ -1092,13 +1082,13 @@
                         if (diffDays === 0) daysText = "Today";
                         if (diffDays === 1) daysText = "1 day left";
 
-                        examHtml = `<div class="mt-0.5 px-1 py-0.5 rounded text-[8px] sm:text-[9px] font-bold ${bgClass} truncate text-center leading-tight" title="${next.name} on ${dateStr}">
+                        examHtml = `<div class="mt-0.5 px-1 py-0.5 rounded text-[9px] font-bold ${bgClass} truncate text-center leading-tight" title="${next.name} on ${dateStr}">
                             ${isUrgent ? '!' : ''} ${next.name}: ${daysText}
                         </div>`;
                     }
                 }
 
-                card.className = `absolute inset-x-0.5 sm:inset-x-1 rounded border-l-2 sm:border-l-4 p-1 sm:p-1.5 flex flex-col overflow-hidden event-card cursor-pointer ${colorSet.light} ${colorSet.dark} justify-start gap-0.5`;
+                card.className = `absolute inset-x-1 rounded border-l-4 p-2 text-xs flex flex-col overflow-hidden event-card cursor-pointer ${colorSet.light} ${colorSet.dark} justify-between`;
                 card.style.top = `${(startMin / TOTAL_MINUTES) * 100}%`;
                 // No min-height to allow squishing slightly if needed, but height is % based
                 // h-full on container ensures it fits
@@ -1107,15 +1097,15 @@
                 
                 card.innerHTML = `
                     <div class="flex flex-col h-full">
-                        <div class="font-bold leading-tight mb-0 sm:mb-0.5 text-[9px] sm:text-xs truncate pointer-events-none">${event.title}</div>
-                        <div class="font-bold opacity-100 mb-0 sm:mb-1 inline-block bg-white/40 dark:bg-black/20 px-1 rounded text-[8px] sm:text-[10px] leading-tight pointer-events-none self-start">${formatTime(event.start)} - ${formatTime(event.end)}</div>
+                        <div class="font-bold leading-none mb-0.5 text-xs truncate pointer-events-none">${event.title}</div>
+                        <div class="font-bold opacity-100 mb-1 inline-block bg-white/40 dark:bg-black/20 px-1 rounded text-[10px] leading-none pointer-events-none self-start">${formatTime(event.start)} - ${formatTime(event.end)}</div>
                         ${examHtml}
-                        <div class="mt-auto font-medium opacity-75 truncate text-[8px] sm:text-[10px] leading-tight flex items-center gap-1 pointer-events-none pt-0.5">${event.loc}</div>
+                        <div class="mt-auto font-medium opacity-75 truncate text-[10px] md:text-xs leading-none flex items-center gap-1 pointer-events-none pt-1">${event.loc}</div>
                     </div>`;
                 container.appendChild(card);
             });
         }
-
+        
         // --- FIREBASE INIT ---
         async function initApp() {
              // Try load local storage first
@@ -1132,18 +1122,22 @@
                     firebaseConfig = JSON.parse(__firebase_config);
                     appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
                 } 
-                // 2. Your Personal Config (Works on your phone/deployment)
+                // 2. Check for User Config (For your phone/hosting)
+                // TODO: To make this sync on your phone, create a project at console.firebase.google.com
+                // paste your config object below, and uncomment it!
                 else {
-                    firebaseConfig = {
-                        apiKey: "AIzaSyAJzNfMfm3GjsAtigoxBgMhBpmcxKdCQqQ",
-                        authDomain: "alice-s-schedule-a2f78.firebaseapp.com",
-                        projectId: "alice-s-schedule-a2f78",
-                        storageBucket: "alice-s-schedule-a2f78.firebasestorage.app",
-                        messagingSenderId: "1066052786485",
-                        appId: "1:1066052786485:web:6dfc6820677f6cecf7147c"
+                    /* firebaseConfig = {
+                        apiKey: "PASTE_YOUR_API_KEY_HERE",
+                        authDomain: "YOUR_PROJECT.firebaseapp.com",
+                        projectId: "YOUR_PROJECT_ID",
+                        storageBucket: "YOUR_PROJECT.firebasestorage.app",
+                        messagingSenderId: "123456789",
+                        appId: "1:123456789:web:abcdef123456"
                     };
-                    // Use a consistent ID for your app's data path
-                    appId = 'alice-fall-schedule-v1'; 
+                    */
+                    
+                    // If you pasted keys above, this ensures unique user data if you don't use Auth
+                    if (firebaseConfig) appId = 'my-custom-schedule-app'; 
                 }
 
                 if (firebaseConfig) {
