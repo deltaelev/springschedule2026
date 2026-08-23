@@ -169,19 +169,19 @@
 
     <!-- ASSIGNMENT MODAL -->
     <div id="assignment-modal-overlay" class="fixed inset-0 z-[120] bg-black/50 backdrop-blur-sm hidden flex items-center justify-center p-4 opacity-0 transition-opacity" onclick="window.closeAssignmentModal(event)">
-        <div class="modal-content bg-white dark:bg-gray-900 rounded-2xl shadow-2xl max-w-md w-full overflow-hidden transform scale-95 opacity-0 transition-all p-6">
-            <h3 id="modal-form-title" class="text-lg font-bold text-gray-900 dark:text-white mb-4">Add Assignment</h3>
+        <div class="modal-content bg-white dark:bg-gray-900 rounded-2xl shadow-2xl max-w-md w-full overflow-hidden transform scale-95 opacity-0 transition-all p-8">
+            <h3 id="modal-form-title" class="text-xl font-bold text-gray-900 dark:text-white mb-6">Add Assignment</h3>
             <form id="assignment-form" onsubmit="window.handleAssignmentSubmit(event)">
                 <input type="hidden" id="task-id">
-                <div class="space-y-4">
+                <div class="space-y-5">
                     <div>
-                        <label class="block text-xs font-semibold text-gray-500 uppercase mb-1">Title</label>
-                        <input type="text" id="task-title" required class="w-full rounded-lg border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white p-2 text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none" placeholder="e.g. Midterm 2">
+                        <label class="block text-xs font-semibold text-gray-500 uppercase mb-2 tracking-wider">Title</label>
+                        <input type="text" id="task-title" required class="w-full rounded-xl border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white p-3 text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none transition-shadow" placeholder="e.g. Midterm 2">
                     </div>
-                    <div class="grid grid-cols-2 gap-4">
+                    <div class="grid grid-cols-2 gap-5">
                         <div>
-                            <label class="block text-xs font-semibold text-gray-500 uppercase mb-1">Course</label>
-                            <select id="task-course" class="w-full rounded-lg border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white p-2 text-sm focus:ring-2 focus:ring-indigo-500">
+                            <label class="block text-xs font-semibold text-gray-500 uppercase mb-2 tracking-wider">Course</label>
+                            <select id="task-course" class="w-full rounded-xl border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white p-3 text-sm focus:ring-2 focus:ring-indigo-500 transition-shadow">
                                 <option value="AMS 261">AMS 261</option>
                                 <option value="CME 304">CME 304</option>
                                 <option value="ESG 111">ESG 111</option>
@@ -189,8 +189,8 @@
                             </select>
                         </div>
                         <div>
-                            <label class="block text-xs font-semibold text-gray-500 uppercase mb-1">Type</label>
-                            <select id="task-type" class="w-full rounded-lg border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white p-2 text-sm focus:ring-2 focus:ring-indigo-500">
+                            <label class="block text-xs font-semibold text-gray-500 uppercase mb-2 tracking-wider">Type</label>
+                            <select id="task-type" class="w-full rounded-xl border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white p-3 text-sm focus:ring-2 focus:ring-indigo-500 transition-shadow">
                                 <option value="Exam">Exam</option>
                                 <option value="Homework">Homework</option>
                                 <option value="Lab">Lab</option>
@@ -199,17 +199,17 @@
                         </div>
                     </div>
                     <div>
-                        <label class="block text-xs font-semibold text-gray-500 uppercase mb-1">Due Date</label>
-                        <input type="date" id="task-date" required class="w-full rounded-lg border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white p-2 text-sm focus:ring-2 focus:ring-indigo-500">
+                        <label class="block text-xs font-semibold text-gray-500 uppercase mb-2 tracking-wider">Due Date</label>
+                        <input type="date" id="task-date" required class="w-full rounded-xl border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white p-3 text-sm focus:ring-2 focus:ring-indigo-500 transition-shadow">
                     </div>
                     <div>
-                        <label class="block text-xs font-semibold text-gray-500 uppercase mb-1">Notes (Optional)</label>
-                        <textarea id="task-notes" rows="3" class="w-full rounded-lg border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white p-2 text-sm focus:ring-2 focus:ring-indigo-500 resize-none" placeholder="Add details here..."></textarea>
+                        <label class="block text-xs font-semibold text-gray-500 uppercase mb-2 tracking-wider">Notes (Optional)</label>
+                        <textarea id="task-notes" rows="4" class="w-full rounded-xl border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white p-3 text-sm focus:ring-2 focus:ring-indigo-500 resize-none transition-shadow" placeholder="Add details here..."></textarea>
                     </div>
                 </div>
-                <div class="mt-6 flex justify-end gap-2">
-                    <button type="button" onclick="window.closeAssignmentModal(null, true)" class="px-4 py-2 text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg">Cancel</button>
-                    <button type="submit" class="px-4 py-2 text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 rounded-lg shadow">Save</button>
+                <div class="mt-8 flex justify-end gap-3">
+                    <button type="button" onclick="window.closeAssignmentModal(null, true)" class="px-5 py-2.5 text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-xl transition-colors">Cancel</button>
+                    <button type="submit" class="px-5 py-2.5 text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 rounded-xl shadow-sm transition-colors">Save Task</button>
                 </div>
             </form>
         </div>
