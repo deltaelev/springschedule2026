@@ -98,9 +98,9 @@
                  </div>
             </div>
             
-            <!-- Scrollable Schedule Area -->
-            <div class="flex-1 relative overflow-y-auto custom-scroll">
-                <div class="w-full flex" style="height: 1188px;"> <!-- Forced height for tall cards -->
+            <!-- Full-View Schedule Area (No Scrolling) -->
+            <div class="flex-1 relative">
+                <div class="w-full h-full flex">
                     <!-- Time Column -->
                     <div class="w-16 flex-shrink-0 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 relative">
                         <div id="time-labels" class="relative h-full"></div>
@@ -1031,7 +1031,7 @@
                 for (let h = START_HOUR; h < END_HOUR; h++) {
                     const label = document.createElement('div');
                     const marginTop = h === START_HOUR ? '-mt-0' : '-mt-2';
-                    label.className = `absolute w-full text-right pr-2 text-xs text-gray-400 font-medium ${marginTop}`;
+                    label.className = `absolute w-full text-right pr-1 sm:pr-2 text-[10px] sm:text-xs text-gray-400 font-medium ${marginTop}`;
                     label.style.top = `${((h - START_HOUR) * 60 / TOTAL_MINUTES) * 100}%`;
                     label.innerText = `${h > 12 ? h - 12 : h} ${h >= 12 ? 'PM' : 'AM'}`;
                     timeContainer.appendChild(label);
@@ -1092,13 +1092,13 @@
                         if (diffDays === 0) daysText = "Today";
                         if (diffDays === 1) daysText = "1 day left";
 
-                        examHtml = `<div class="mt-0.5 px-1 py-0.5 rounded text-[9px] font-bold ${bgClass} truncate text-center leading-tight" title="${next.name} on ${dateStr}">
+                        examHtml = `<div class="mt-0.5 px-1 py-0.5 rounded text-[8px] sm:text-[9px] font-bold ${bgClass} truncate text-center leading-tight" title="${next.name} on ${dateStr}">
                             ${isUrgent ? '!' : ''} ${next.name}: ${daysText}
                         </div>`;
                     }
                 }
 
-                card.className = `absolute inset-x-1 rounded border-l-4 p-2 text-xs flex flex-col overflow-hidden event-card cursor-pointer ${colorSet.light} ${colorSet.dark} justify-between`;
+                card.className = `absolute inset-x-0.5 sm:inset-x-1 rounded border-l-2 sm:border-l-4 p-1 sm:p-1.5 flex flex-col overflow-hidden event-card cursor-pointer ${colorSet.light} ${colorSet.dark} justify-start gap-0.5`;
                 card.style.top = `${(startMin / TOTAL_MINUTES) * 100}%`;
                 // No min-height to allow squishing slightly if needed, but height is % based
                 // h-full on container ensures it fits
@@ -1107,15 +1107,15 @@
                 
                 card.innerHTML = `
                     <div class="flex flex-col h-full">
-                        <div class="font-bold leading-none mb-0.5 text-xs truncate pointer-events-none">${event.title}</div>
-                        <div class="font-bold opacity-100 mb-1 inline-block bg-white/40 dark:bg-black/20 px-1 rounded text-[10px] leading-none pointer-events-none self-start">${formatTime(event.start)} - ${formatTime(event.end)}</div>
+                        <div class="font-bold leading-tight mb-0 sm:mb-0.5 text-[9px] sm:text-xs truncate pointer-events-none">${event.title}</div>
+                        <div class="font-bold opacity-100 mb-0 sm:mb-1 inline-block bg-white/40 dark:bg-black/20 px-1 rounded text-[8px] sm:text-[10px] leading-tight pointer-events-none self-start">${formatTime(event.start)} - ${formatTime(event.end)}</div>
                         ${examHtml}
-                        <div class="mt-auto font-medium opacity-75 truncate text-[10px] md:text-xs leading-none flex items-center gap-1 pointer-events-none pt-1">${event.loc}</div>
+                        <div class="mt-auto font-medium opacity-75 truncate text-[8px] sm:text-[10px] leading-tight flex items-center gap-1 pointer-events-none pt-0.5">${event.loc}</div>
                     </div>`;
                 container.appendChild(card);
             });
         }
-        
+
         // --- FIREBASE INIT ---
         async function initApp() {
              // Try load local storage first
