@@ -76,7 +76,12 @@
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
                     Weekly Overview
                 </h2>
-                <div id="live-indicator-status" class="text-xs font-medium text-red-500 flex items-center gap-1 animate-pulse"><span class="w-2 h-2 bg-red-500 rounded-full"></span> LIVE</div>
+                <div class="flex items-center gap-3">
+                    <div id="active-class-indicator" class="text-xs font-semibold text-white bg-indigo-600 px-3 py-1 rounded-full hidden shadow-sm animate-pulse-slow">
+                        Now: <span id="active-class-name"></span>
+                    </div>
+                    <div id="live-indicator-status" class="text-xs font-medium text-red-500 flex items-center gap-1 animate-pulse"><span class="w-2 h-2 bg-red-500 rounded-full"></span> LIVE</div>
+                </div>
             </div>
 
             <!-- Fixed Days Header (Sticks to page scroll at 110px down, z-[55] sits below main header) -->
@@ -380,6 +385,7 @@
         let defaultTime = 25 * 60;
         let timerMode = 'countdown';
         let stopwatchSeconds = 0;
+        let clockInterval = null;
         const FULL_DASH_ARRAY = 565.48;
         const START_HOUR = 8;
         const END_HOUR = 19;
@@ -915,6 +921,53 @@
         };
 
         // --- INTERNAL FUNCTIONS ---
+        function updateLiveClock() {
+            const now = new Date();
+            const hour = now.getHours();
+            const minute = now.getMinutes();
+            const currentMin = (hour * 60) + minute;
+            const startMinTotal = START_HOUR * 60;
+            const endMinTotal = END_HOUR * 60;
+            
+            const line = document.getElementById('current-time-line');
+            const indicator = document.getElementById('active-class-indicator');
+            const indicatorText = document.getElementById('active-class-name');
+            
+            // 1. Update the red line position
+            if (currentMin >= startMinTotal && currentMin <= endMinTotal) {
+                const percent = ((currentMin - startMinTotal) / TOTAL_MINUTES) * 100;
+                line.style.top = `${percent}%`;
+                line.classList.remove('hidden');
+            } else {
+                line.classList.add('hidden');
+            }
+
+            // 2. Determine if a class is currently active
+            const days = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'];
+            const todayKey = days[now.getDay()];
+            
+            let activeClass = null;
+            
+            schedule.filter(s => s.day === todayKey).forEach(c => {
+                const [startH, startM] = c.start.split(':').map(Number);
+                const [endH, endM] = c.end.split(':').map(Number);
+                const classStartMin = (startH * 60) + startM;
+                const classEndMin = (endH * 60) + endM;
+                
+                if (currentMin >= classStartMin && currentMin < classEndMin) {
+                    activeClass = c;
+                }
+            });
+            
+            // 3. Update the badge UI
+            if (activeClass) {
+                indicatorText.innerText = activeClass.title.split(' - ')[0]; // Show short name like "AMS 261"
+                indicator.classList.remove('hidden');
+            } else {
+                indicator.classList.add('hidden');
+            }
+        }
+
         function updateTodayClasses() {
             const days = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'];
             const todayKey = days[new Date().getDay()];
@@ -1119,22 +1172,18 @@
                     firebaseConfig = JSON.parse(__firebase_config);
                     appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
                 } 
-                // 2. Check for User Config (For your phone/hosting)
-                // TODO: To make this sync on your phone, create a project at console.firebase.google.com
-                // paste your config object below, and uncomment it!
+                // 2. Your Personal Config (Works on your phone/deployment)
                 else {
-                    /* firebaseConfig = {
-                        apiKey: "PASTE_YOUR_API_KEY_HERE",
-                        authDomain: "YOUR_PROJECT.firebaseapp.com",
-                        projectId: "YOUR_PROJECT_ID",
-                        storageBucket: "YOUR_PROJECT.firebasestorage.app",
-                        messagingSenderId: "123456789",
-                        appId: "1:123456789:web:abcdef123456"
+                    firebaseConfig = {
+                        apiKey: "AIzaSyAJzNfMfm3GjsAtigoxBgMhBpmcxKdCQqQ",
+                        authDomain: "alice-s-schedule-a2f78.firebaseapp.com",
+                        projectId: "alice-s-schedule-a2f78",
+                        storageBucket: "alice-s-schedule-a2f78.firebasestorage.app",
+                        messagingSenderId: "1066052786485",
+                        appId: "1:1066052786485:web:6dfc6820677f6cecf7147c"
                     };
-                    */
-                    
-                    // If you pasted keys above, this ensures unique user data if you don't use Auth
-                    if (firebaseConfig) appId = 'my-custom-schedule-app'; 
+                    // Use a consistent ID for your app's data path
+                    appId = 'alice-fall-schedule-v1'; 
                 }
 
                 if (firebaseConfig) {
@@ -1158,8 +1207,6 @@
                             fetchStudyStats();
                         }
                     });
-                } else {
-                    throw new Error("No Firebase config found");
                 }
             } catch (e) {
                 console.warn("Running in local mode:", e);
@@ -1205,6 +1252,11 @@
             renderSchedule();
             renderCalendar();
             updateTimerDisplay();
+            
+            // Start the live clock for the red line
+            updateLiveClock();
+            clearInterval(clockInterval);
+            clockInterval = setInterval(updateLiveClock, 60000); // Update every minute
         };
         
         initApp();
