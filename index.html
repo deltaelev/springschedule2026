@@ -413,22 +413,23 @@
         const END_HOUR = 19;
         const TOTAL_MINUTES = (END_HOUR - START_HOUR) * 60;
 
+        // --- STREAMING_CHUNK:Defining class schedule data and colors... ---
         // --- DATA CONSTANTS ---
         const schedule = [
             // Monday
-            { day: 'mon', title: 'AMS 261 - 01', type: 'Lecture', start: '11:00', end: '11:55', loc: 'Earth and Space Sciences Bl 001', prof: 'TBA', fullTitle: 'AMS 261', exams: [] },
-            { day: 'mon', title: 'AMS 261 - R01', type: 'Recitation', start: '14:00', end: '14:55', loc: 'Psychology A 137', prof: 'TBA', fullTitle: 'AMS 261 (Rec)', exams: [] },
+            { day: 'mon', title: 'AMS 261 - 01', type: 'Lecture', start: '11:00', end: '11:55', loc: 'Earth and Space Sciences Bl 001', prof: 'TBA', fullTitle: 'AMS 261', exams: [], syllabusUrl: 'https://drive.google.com/file/d/1V5rlV49xuCCt2xknu8T99Qa1uIiLrOAn/view?usp=sharing' },
+            { day: 'mon', title: 'AMS 261 - R01', type: 'Recitation', start: '14:00', end: '14:55', loc: 'Psychology A 137', prof: 'TBA', fullTitle: 'AMS 261 (Rec)', exams: [], syllabusUrl: 'https://drive.google.com/file/d/1V5rlV49xuCCt2xknu8T99Qa1uIiLrOAn/view?usp=sharing' },
             { day: 'mon', title: 'CME 304 - 01', type: 'Lecture', start: '17:00', end: '18:20', loc: 'Staller Center for the Arts M0113', prof: 'TBA', fullTitle: 'CME 304', exams: [] },
             // Tuesday
             { day: 'tue', title: 'ESG 111 - 02', type: 'Lecture', start: '09:30', end: '10:50', loc: 'Javits Lecture Center 109', prof: 'TBA', fullTitle: 'ESG 111', exams: [] },
             // Wednesday
-            { day: 'wed', title: 'AMS 261 - 01', type: 'Lecture', start: '11:00', end: '11:55', loc: 'Earth and Space Sciences Bl 001', prof: 'TBA', fullTitle: 'AMS 261', exams: [] },
+            { day: 'wed', title: 'AMS 261 - 01', type: 'Lecture', start: '11:00', end: '11:55', loc: 'Earth and Space Sciences Bl 001', prof: 'TBA', fullTitle: 'AMS 261', exams: [], syllabusUrl: 'https://drive.google.com/file/d/1V5rlV49xuCCt2xknu8T99Qa1uIiLrOAn/view?usp=sharing' },
             { day: 'wed', title: 'CME 304 - 01', type: 'Lecture', start: '17:00', end: '18:20', loc: 'Staller Center for the Arts M0113', prof: 'TBA', fullTitle: 'CME 304', exams: [] },
             // Thursday
             { day: 'thu', title: 'ESG 111 - 02', type: 'Lecture', start: '09:30', end: '10:50', loc: 'Javits Lecture Center 109', prof: 'TBA', fullTitle: 'ESG 111', exams: [] },
             // Friday
             { day: 'fri', title: 'CME 304 - R01', type: 'Recitation', start: '09:30', end: '10:25', loc: 'Light Engineering 102', prof: 'TBA', fullTitle: 'CME 304 (Rec)', exams: [] },
-            { day: 'fri', title: 'AMS 261 - 01', type: 'Lecture', start: '11:00', end: '11:55', loc: 'Earth and Space Sciences Bl 001', prof: 'TBA', fullTitle: 'AMS 261', exams: [] }
+            { day: 'fri', title: 'AMS 261 - 01', type: 'Lecture', start: '11:00', end: '11:55', loc: 'Earth and Space Sciences Bl 001', prof: 'TBA', fullTitle: 'AMS 261', exams: [], syllabusUrl: 'https://drive.google.com/file/d/1V5rlV49xuCCt2xknu8T99Qa1uIiLrOAn/view?usp=sharing' }
         ];
 
         const rawColors = {
@@ -447,6 +448,7 @@
             'default': { light: 'bg-gray-100 border-gray-300 text-gray-900', dark: 'dark:bg-gray-800 dark:border-gray-600 dark:text-gray-300' }
         };
 
+        // --- STREAMING_CHUNK:Implementing study statistics fetching... ---
         // --- STUDY STATS ---
         async function fetchStudyStats() {
             if(!user || !db) return; 
@@ -490,6 +492,7 @@
             } catch(e) { console.error("Save session error", e); }
         }
 
+        // --- STREAMING_CHUNK:Exporting UI helper functions to window object... ---
         // --- EXPORTED WINDOW FUNCTIONS ---
         window.toggleDarkMode = () => {
             const isDark = document.documentElement.classList.toggle('dark');
@@ -556,6 +559,7 @@
             }
         };
         
+        // --- STREAMING_CHUNK:Configuring assignment submission... ---
         window.handleAssignmentSubmit = async (e) => {
             e.preventDefault();
             
@@ -610,6 +614,7 @@
             }
         };
 
+        // --- STREAMING_CHUNK:Defining window logic for calendar modal viewing... ---
         window.openDayView = (dateStr) => {
             const modal = document.getElementById('day-view-overlay');
             const dateObj = new Date(dateStr + 'T00:00:00');
@@ -679,6 +684,7 @@
             }
         };
         
+        // --- STREAMING_CHUNK:Opening and closing details for specific courses... ---
         window.openCourseModal = (eventDataStr) => {
             const data = JSON.parse(decodeURIComponent(eventDataStr));
             const modal = document.getElementById('course-modal-overlay');
@@ -748,6 +754,7 @@
             }
         };
 
+        // --- STREAMING_CHUNK:Setting up timer display controls... ---
         // --- TIMER FUNCTIONS ---
         function updateTimerDisplay() {
             let total = 0;
@@ -826,6 +833,7 @@
             }
         };
 
+        // --- STREAMING_CHUNK:Adding study mode and edit logic... ---
         window.toggleStudyMode = () => {
             const overlay = document.getElementById('study-overlay');
             if (overlay.classList.contains('hidden')) {
@@ -912,7 +920,7 @@
                             btn.classList.remove('bg-red-500', 'hover:bg-red-600');
                             btn.classList.add('bg-indigo-600', 'hover:bg-indigo-700');
                             
-                            // Show custom alert modal instead of window.alert()
+                            // Show custom alert modal
                             const alertModal = document.getElementById('custom-alert-overlay');
                             alertModal.classList.remove('hidden');
                             requestAnimationFrame(() => {
@@ -946,6 +954,7 @@
             btn.classList.add('bg-indigo-600', 'hover:bg-indigo-700');
         };
 
+        // --- STREAMING_CHUNK:Building live time updates and calendar rendering logic... ---
         // --- INTERNAL FUNCTIONS ---
         function updateTodayClasses() {
             const days = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'];
@@ -1048,7 +1057,8 @@
                 list.appendChild(item);
             });
         }
-        
+
+        // --- STREAMING_CHUNK:Updating real-time active class markers... ---
         // Live Time Line Logic
         function updateCurrentTimeLine() {
             const now = new Date();
@@ -1171,6 +1181,7 @@
             });
         }
         
+        // --- STREAMING_CHUNK:Configuring Firebase and starting initializers... ---
         // --- FIREBASE INIT ---
         async function initApp() {
              // Try load local storage first
