@@ -409,19 +409,19 @@
         // --- DATA CONSTANTS ---
         const schedule = [
             // Monday
-            { day: 'mon', title: 'AMS 261 - 01', type: 'Lecture', start: '11:00', end: '11:55', loc: 'Earth and Space Sciences Bl 001', prof: 'Hyunkyung Lim', fullTitle: 'Applied Calculus III', exams: [], syllabusUrl: 'https://drive.google.com/file/d/1V5rlV49xuCCt2xknu8T99Qa1uIiLrOAn/view?usp=sharing' },
-            { day: 'mon', title: 'AMS 261 - R01', type: 'Recitation', start: '14:00', end: '14:55', loc: 'Psychology A 137', prof: 'Andrew Deutsch', fullTitle: 'Applied Calculus III (Recitation)', exams: [], syllabusUrl: 'https://drive.google.com/file/d/1V5rlV49xuCCt2xknu8T99Qa1uIiLrOAn/view?usp=sharing' },
-            { day: 'mon', title: 'CME 304 - 01', type: 'Lecture', start: '17:00', end: '18:20', loc: 'Staller Center for the Arts M0113', prof: 'Stefanos Nitodas', fullTitle: 'CME 304', exams: [] },
+            { day: 'mon', title: 'AMS 261 - 01', type: 'Lecture', start: '11:00', end: '11:55', loc: 'Earth and Space Sciences Bl 001', prof: 'TBA', fullTitle: 'Applied Calculus III', exams: [], syllabusUrl: 'https://drive.google.com/file/d/1V5rlV49xuCCt2xknu8T99Qa1uIiLrOAn/view?usp=sharing' },
+            { day: 'mon', title: 'AMS 261 - R01', type: 'Recitation', start: '14:00', end: '14:55', loc: 'Psychology A 137', prof: 'TBA', fullTitle: 'Applied Calculus III (Recitation)', exams: [], syllabusUrl: 'https://drive.google.com/file/d/1V5rlV49xuCCt2xknu8T99Qa1uIiLrOAn/view?usp=sharing' },
+            { day: 'mon', title: 'CME 304 - 01', type: 'Lecture', start: '17:00', end: '18:20', loc: 'Staller Center for the Arts M0113', prof: 'TBA', fullTitle: 'CME 304', exams: [] },
             // Tuesday
-            { day: 'tue', title: 'ESG 111 - 02', type: 'Lecture', start: '09:30', end: '10:50', loc: 'Javits Lecture Center 109', prof: 'Maya Endoh', fullTitle: 'ESG 111', exams: [], syllabusUrl: 'https://drive.google.com/file/d/1uBQ4dqWsUc9k8RXruMIWJOZ6Ee8RSxVU/view?usp=sharing' },
+            { day: 'tue', title: 'ESG 111 - 02', type: 'Lecture', start: '09:30', end: '10:50', loc: 'Javits Lecture Center 109', prof: 'TBA', fullTitle: 'ESG 111', exams: [{ name: 'Midterm 1', date: '2026-10-22' }, { name: 'Final', date: '2026-12-11' }] },
             // Wednesday
-            { day: 'wed', title: 'AMS 261 - 01', type: 'Lecture', start: '11:00', end: '11:55', loc: 'Earth and Space Sciences Bl 001', prof: 'Hyunkyung Lim', fullTitle: 'Applied Calculus III', exams: [], syllabusUrl: 'https://drive.google.com/file/d/1V5rlV49xuCCt2xknu8T99Qa1uIiLrOAn/view?usp=sharing' },
-            { day: 'wed', title: 'CME 304 - 01', type: 'Lecture', start: '17:00', end: '18:20', loc: 'Staller Center for the Arts M0113', prof: 'Stefanos Nitodas', fullTitle: 'CME 304', exams: [] },
+            { day: 'wed', title: 'AMS 261 - 01', type: 'Lecture', start: '11:00', end: '11:55', loc: 'Earth and Space Sciences Bl 001', prof: 'TBA', fullTitle: 'Applied Calculus III', exams: [], syllabusUrl: 'https://drive.google.com/file/d/1V5rlV49xuCCt2xknu8T99Qa1uIiLrOAn/view?usp=sharing' },
+            { day: 'wed', title: 'CME 304 - 01', type: 'Lecture', start: '17:00', end: '18:20', loc: 'Staller Center for the Arts M0113', prof: 'TBA', fullTitle: 'CME 304', exams: [] },
             // Thursday
-            { day: 'thu', title: 'ESG 111 - 02', type: 'Lecture', start: '09:30', end: '10:50', loc: 'Javits Lecture Center 109', prof: 'Maya Endoh', fullTitle: 'ESG 111', exams: [], syllabusUrl: 'https://drive.google.com/file/d/1V5rlV49xuCCt2xknu8T99Qa1uIiLrOAn/view?usp=sharing' },
+            { day: 'thu', title: 'ESG 111 - 02', type: 'Lecture', start: '09:30', end: '10:50', loc: 'Javits Lecture Center 109', prof: 'TBA', fullTitle: 'ESG 111', exams: [{ name: 'Midterm 1', date: '2026-10-22' }, { name: 'Final', date: '2026-12-11' }] },
             // Friday
-            { day: 'fri', title: 'CME 304 - R01', type: 'Recitation', start: '09:30', end: '10:25', loc: 'Light Engineering 102', prof: 'Stefanos Nitodas', fullTitle: 'CME 304 (Recitation)', exams: [] },
-            { day: 'fri', title: 'AMS 261 - 01', type: 'Lecture', start: '11:00', end: '11:55', loc: 'Earth and Space Sciences Bl 001', prof: 'Hyunkyung Lim', fullTitle: 'Applied Calculus III', exams: [], syllabusUrl: 'https://drive.google.com/file/d/1V5rlV49xuCCt2xknu8T99Qa1uIiLrOAn/view?usp=sharing' }
+            { day: 'fri', title: 'CME 304 - R01', type: 'Recitation', start: '09:30', end: '10:25', loc: 'Light Engineering 102', prof: 'TBA', fullTitle: 'CME 304 (Recitation)', exams: [] },
+            { day: 'fri', title: 'AMS 261 - 01', type: 'Lecture', start: '11:00', end: '11:55', loc: 'Earth and Space Sciences Bl 001', prof: 'TBA', fullTitle: 'Applied Calculus III', exams: [], syllabusUrl: 'https://drive.google.com/file/d/1V5rlV49xuCCt2xknu8T99Qa1uIiLrOAn/view?usp=sharing' }
         ];
 
         const rawColors = {
@@ -1100,10 +1100,22 @@
                     timeContainer.appendChild(label);
                 }
             }
-            // Clear columns
+            
+            // Clear columns and highlight today
+            const daysArr = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'];
+            const todayKey = daysArr[new Date().getDay()];
+            
             ['mon','tue','wed','thu','fri'].forEach(d => {
                 const col = document.getElementById(`col-${d}`);
-                if(col) col.innerHTML = '';
+                if(col) {
+                    col.innerHTML = '';
+                    // Highlight the current day's column slightly
+                    if (d === todayKey) {
+                        col.classList.add('bg-indigo-50/40', 'dark:bg-indigo-900/20');
+                    } else {
+                        col.classList.remove('bg-indigo-50/40', 'dark:bg-indigo-900/20');
+                    }
+                }
             });
 
             // Render Events
