@@ -241,18 +241,36 @@
                         <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Event Title</label>
                         <input type="text" id="event-title" required class="w-full rounded-lg border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white p-3.5 text-base focus:ring-2 focus:ring-indigo-500 focus:outline-none" placeholder="e.g. Study Group">
                     </div>
-                    <div class="grid grid-cols-2 gap-6">
-                        <div>
-                            <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Day</label>
-                            <select id="event-day" class="w-full rounded-lg border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white p-3.5 text-base focus:ring-2 focus:ring-indigo-500">
-                                <option value="mon">Monday</option>
-                                <option value="tue">Tuesday</option>
-                                <option value="wed">Wednesday</option>
-                                <option value="thu">Thursday</option>
-                                <option value="fri">Friday</option>
-                            </select>
+                    
+                    <!-- NEW DAYS CHECKBOXES -->
+                    <div>
+                        <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Days (Select Multiple)</label>
+                        <div class="flex gap-2">
+                            <label class="flex-1 cursor-pointer">
+                                <input type="checkbox" name="event-days" value="mon" class="peer sr-only">
+                                <div class="px-2 py-2 text-center rounded-lg border border-gray-300 dark:border-gray-700 text-sm font-medium text-gray-500 dark:text-gray-400 peer-checked:bg-indigo-600 peer-checked:text-white peer-checked:border-indigo-600 transition-colors">M</div>
+                            </label>
+                            <label class="flex-1 cursor-pointer">
+                                <input type="checkbox" name="event-days" value="tue" class="peer sr-only">
+                                <div class="px-2 py-2 text-center rounded-lg border border-gray-300 dark:border-gray-700 text-sm font-medium text-gray-500 dark:text-gray-400 peer-checked:bg-indigo-600 peer-checked:text-white peer-checked:border-indigo-600 transition-colors">T</div>
+                            </label>
+                            <label class="flex-1 cursor-pointer">
+                                <input type="checkbox" name="event-days" value="wed" class="peer sr-only">
+                                <div class="px-2 py-2 text-center rounded-lg border border-gray-300 dark:border-gray-700 text-sm font-medium text-gray-500 dark:text-gray-400 peer-checked:bg-indigo-600 peer-checked:text-white peer-checked:border-indigo-600 transition-colors">W</div>
+                            </label>
+                            <label class="flex-1 cursor-pointer">
+                                <input type="checkbox" name="event-days" value="thu" class="peer sr-only">
+                                <div class="px-2 py-2 text-center rounded-lg border border-gray-300 dark:border-gray-700 text-sm font-medium text-gray-500 dark:text-gray-400 peer-checked:bg-indigo-600 peer-checked:text-white peer-checked:border-indigo-600 transition-colors">T</div>
+                            </label>
+                            <label class="flex-1 cursor-pointer">
+                                <input type="checkbox" name="event-days" value="fri" class="peer sr-only">
+                                <div class="px-2 py-2 text-center rounded-lg border border-gray-300 dark:border-gray-700 text-sm font-medium text-gray-500 dark:text-gray-400 peer-checked:bg-indigo-600 peer-checked:text-white peer-checked:border-indigo-600 transition-colors">F</div>
+                            </label>
                         </div>
-                        <div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-6">
+                        <div class="col-span-2">
                             <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Color</label>
                             <select id="event-color" class="w-full rounded-lg border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white p-3.5 text-base focus:ring-2 focus:ring-indigo-500">
                                 <option value="Gray">Gray (Default)</option>
@@ -597,7 +615,12 @@
                     document.getElementById('event-modal-title').innerText = "Edit Custom Event";
                     document.getElementById('event-id').value = event.id;
                     document.getElementById('event-title').value = event.fullTitle || event.title;
-                    document.getElementById('event-day').value = event.day;
+                    
+                    // Reset all checkboxes, then check the one for this event
+                    document.querySelectorAll('input[name="event-days"]').forEach(cb => cb.checked = false);
+                    const dayCheckbox = document.querySelector(`input[name="event-days"][value="${event.day}"]`);
+                    if(dayCheckbox) dayCheckbox.checked = true;
+
                     document.getElementById('event-start').value = event.start;
                     document.getElementById('event-end').value = event.end;
                     document.getElementById('event-loc').value = event.loc || '';
@@ -607,6 +630,8 @@
                 document.getElementById('event-modal-title').innerText = "Add Custom Event";
                 document.getElementById('event-form').reset();
                 document.getElementById('event-id').value = "";
+                // Uncheck all by default for a new event
+                document.querySelectorAll('input[name="event-days"]').forEach(cb => cb.checked = false);
             }
 
             modal.classList.remove('hidden');
@@ -698,14 +723,21 @@
             
             const id = document.getElementById('event-id').value;
             const title = document.getElementById('event-title').value;
-            const day = document.getElementById('event-day').value;
             const start = document.getElementById('event-start').value;
             const end = document.getElementById('event-end').value;
             const loc = document.getElementById('event-loc').value || 'TBD';
             const color = document.getElementById('event-color').value; 
             
-            const data = {
-                day,
+            // Get all checked days
+            const selectedDays = Array.from(document.querySelectorAll('input[name="event-days"]:checked')).map(cb => cb.value);
+            
+            if (selectedDays.length === 0) {
+                alert("Please select at least one day.");
+                return;
+            }
+
+            // Create a base data object
+            const baseData = {
                 title: title,
                 color: color,
                 type: 'Custom Event',
@@ -719,10 +751,15 @@
 
             if (!db || !auth) {
                  if (id) {
-                     customEvents = customEvents.map(ev => ev.id === id ? {id, ...data} : ev);
+                     // If editing, we assume they only checked ONE day. 
+                     // Complex edits (like changing 1 event into 3 events) require deleting and recreating in this simple system.
+                     const day = selectedDays[0];
+                     customEvents = customEvents.map(ev => ev.id === id ? {id, day, ...baseData} : ev);
                  } else {
-                     data.id = Date.now().toString();
-                     customEvents.push(data);
+                     // Add a new event for EACH selected day
+                     selectedDays.forEach(day => {
+                         customEvents.push({ id: Date.now().toString() + Math.random().toString(36).substring(7), day, ...baseData });
+                     });
                  }
                  localStorage.setItem('my_schedule_events', JSON.stringify(customEvents));
                  renderSchedule();
@@ -734,11 +771,17 @@
 
             try {
                 if (id) {
-                    await updateDoc(doc(db, 'artifacts', appId, 'users', user.uid, 'events', id), data);
+                     // Simple edit mode updates the first selected day
+                     const day = selectedDays[0];
+                    await updateDoc(doc(db, 'artifacts', appId, 'users', user.uid, 'events', id), { day, ...baseData });
                 } else {
-                    await addDoc(collection(db, 'artifacts', appId, 'users', user.uid, 'events'), {
-                        ...data, createdAt: new Date()
+                    // Create multiple documents for multiple days
+                    const promises = selectedDays.map(day => {
+                        return addDoc(collection(db, 'artifacts', appId, 'users', user.uid, 'events'), {
+                            day, ...baseData, createdAt: new Date()
+                        });
                     });
+                    await Promise.all(promises);
                 }
                 window.closeEventModal(null, true);
             } catch (err) {
