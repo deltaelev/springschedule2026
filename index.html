@@ -247,45 +247,29 @@
                         <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Days (Select Multiple)</label>
                         <div class="flex gap-2">
                             <label class="flex-1 cursor-pointer">
-                                <input type="checkbox" name="event-days" value="mon" class="peer sr-only">
-                                <div class="px-2 py-2 text-center rounded-lg border border-gray-300 dark:border-gray-700 text-sm font-medium text-gray-500 dark:text-gray-400 peer-checked:bg-indigo-600 peer-checked:text-white peer-checked:border-indigo-600 transition-colors">M</div>
-                            </label>
-                            <label class="flex-1 cursor-pointer">
-                                <input type="checkbox" name="event-days" value="tue" class="peer sr-only">
-                                <div class="px-2 py-2 text-center rounded-lg border border-gray-300 dark:border-gray-700 text-sm font-medium text-gray-500 dark:text-gray-400 peer-checked:bg-indigo-600 peer-checked:text-white peer-checked:border-indigo-600 transition-colors">T</div>
-                            </label>
-                            <label class="flex-1 cursor-pointer">
-                                <input type="checkbox" name="event-days" value="wed" class="peer sr-only">
-                                <div class="px-2 py-2 text-center rounded-lg border border-gray-300 dark:border-gray-700 text-sm font-medium text-gray-500 dark:text-gray-400 peer-checked:bg-indigo-600 peer-checked:text-white peer-checked:border-indigo-600 transition-colors">W</div>
-                            </label>
-                            <label class="flex-1 cursor-pointer">
-                                <input type="checkbox" name="event-days" value="thu" class="peer sr-only">
-                                <div class="px-2 py-2 text-center rounded-lg border border-gray-300 dark:border-gray-700 text-sm font-medium text-gray-500 dark:text-gray-400 peer-checked:bg-indigo-600 peer-checked:text-white peer-checked:border-indigo-600 transition-colors">T</div>
-                            </label>
-                            <label class="flex-1 cursor-pointer">
-                                <input type="checkbox" name="event-days" value="fri" class="peer sr-only">
-                                <div class="px-2 py-2 text-center rounded-lg border border-gray-300 dark:border-gray-700 text-sm font-medium text-gray-500 dark:text-gray-400 peer-checked:bg-indigo-600 peer-checked:text-white peer-checked:border-indigo-600 transition-colors">F</div>
-                            </label>
-                        </div>
+                            <input type="checkbox" name="event-days" value="fri" class="peer sr-only">
+                            <div class="px-2 py-2 text-center rounded-lg border border-gray-300 dark:border-gray-700 text-sm font-medium text-gray-500 dark:text-gray-400 peer-checked:bg-indigo-600 peer-checked:text-white peer-checked:border-indigo-600 transition-colors">F</div>
+                        </label>
                     </div>
+                </div>
 
-                    <div class="col-span-2">
-                        <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Color</label>
-                        <select id="event-color" class="w-full rounded-lg border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white p-3.5 text-base focus:ring-2 focus:ring-indigo-500">
-                            <option value="Gray">Gray (Default)</option>
-                            <option value="Blue">Blue</option>
-                            <option value="Green">Green</option>
-                            <option value="Red">Red</option>
-                            <option value="Orange">Orange</option>
-                            <option value="Purple">Purple</option>
-                            <option value="Pink">Pink</option>
-                            <option value="Teal">Teal</option>
-                        </select>
-                    </div>
+                <div class="col-span-2 mt-1">
+                    <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-4">Color</label>
+                    <select id="event-color" class="w-full rounded-lg border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white py-4 px-5 text-base focus:ring-2 focus:ring-indigo-500">
+                        <option value="Gray">Gray (Default)</option>
+                        <option value="Blue">Blue</option>
+                        <option value="Green">Green</option>
+                        <option value="Red">Red</option>
+                        <option value="Orange">Orange</option>
+                        <option value="Purple">Purple</option>
+                        <option value="Pink">Pink</option>
+                        <option value="Teal">Teal</option>
+                    </select>
+                </div>
 
-                    <div class="grid grid-cols-2 gap-6">
-                        <div>
-                            <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Start Time</label>
+                <div class="grid grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Start Time</label>
                             <input type="time" id="event-start" required class="w-full rounded-lg border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white p-3.5 text-base focus:ring-2 focus:ring-indigo-500">
                         </div>
                         <div>
