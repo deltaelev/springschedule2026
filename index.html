@@ -233,17 +233,18 @@
     <!-- EVENT MODAL -->
     <div id="event-modal-overlay" class="fixed inset-0 z-[120] bg-black/50 backdrop-blur-sm hidden flex items-center justify-center p-4 opacity-0 transition-opacity" onclick="window.closeEventModal(event)">
         <div class="modal-content bg-white dark:bg-gray-900 rounded-2xl shadow-2xl max-w-md w-full overflow-hidden transform scale-95 opacity-0 transition-all p-8">
-            <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-6">Add Custom Event</h3>
+            <h3 id="event-modal-title" class="text-xl font-bold text-gray-900 dark:text-white mb-6">Add Custom Event</h3>
             <form id="event-form" onsubmit="window.handleEventSubmit(event)">
-                <div class="space-y-5">
+                <input type="hidden" id="event-id">
+                <div class="space-y-6">
                     <div>
                         <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Event Title</label>
-                        <input type="text" id="event-title" required class="w-full rounded-lg border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white p-3 text-base focus:ring-2 focus:ring-indigo-500 focus:outline-none" placeholder="e.g. Study Group">
+                        <input type="text" id="event-title" required class="w-full rounded-lg border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white p-3.5 text-base focus:ring-2 focus:ring-indigo-500 focus:outline-none" placeholder="e.g. Study Group">
                     </div>
-                    <div class="grid grid-cols-2 gap-5">
+                    <div class="grid grid-cols-2 gap-6">
                         <div>
                             <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Day</label>
-                            <select id="event-day" class="w-full rounded-lg border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white p-3 text-base focus:ring-2 focus:ring-indigo-500">
+                            <select id="event-day" class="w-full rounded-lg border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white p-3.5 text-base focus:ring-2 focus:ring-indigo-500">
                                 <option value="mon">Monday</option>
                                 <option value="tue">Tuesday</option>
                                 <option value="wed">Wednesday</option>
@@ -253,28 +254,31 @@
                         </div>
                         <div>
                             <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Color</label>
-                            <select id="event-color" class="w-full rounded-lg border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white p-3 text-base focus:ring-2 focus:ring-indigo-500">
-                                <option value="Other">Gray (Default)</option>
-                                <option value="AMS 261">Blue (AMS)</option>
-                                <option value="CME 304">Green (CME)</option>
-                                <option value="ESG 111">Red (ESG)</option>
-                                <option value="POL 102">Orange (POL)</option>
+                            <select id="event-color" class="w-full rounded-lg border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white p-3.5 text-base focus:ring-2 focus:ring-indigo-500">
+                                <option value="Gray">Gray (Default)</option>
+                                <option value="Blue">Blue</option>
+                                <option value="Green">Green</option>
+                                <option value="Red">Red</option>
+                                <option value="Orange">Orange</option>
+                                <option value="Purple">Purple</option>
+                                <option value="Pink">Pink</option>
+                                <option value="Teal">Teal</option>
                             </select>
                         </div>
                     </div>
-                    <div class="grid grid-cols-2 gap-5">
+                    <div class="grid grid-cols-2 gap-6">
                         <div>
                             <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Start Time</label>
-                            <input type="time" id="event-start" required class="w-full rounded-lg border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white p-3 text-base focus:ring-2 focus:ring-indigo-500">
+                            <input type="time" id="event-start" required class="w-full rounded-lg border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white p-3.5 text-base focus:ring-2 focus:ring-indigo-500">
                         </div>
                         <div>
                             <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">End Time</label>
-                            <input type="time" id="event-end" required class="w-full rounded-lg border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white p-3 text-base focus:ring-2 focus:ring-indigo-500">
+                            <input type="time" id="event-end" required class="w-full rounded-lg border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white p-3.5 text-base focus:ring-2 focus:ring-indigo-500">
                         </div>
                     </div>
                     <div>
                         <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Location (Optional)</label>
-                        <input type="text" id="event-loc" class="w-full rounded-lg border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white p-3 text-base focus:ring-2 focus:ring-indigo-500 focus:outline-none" placeholder="e.g. Library">
+                        <input type="text" id="event-loc" class="w-full rounded-lg border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white p-3.5 text-base focus:ring-2 focus:ring-indigo-500 focus:outline-none" placeholder="e.g. Library">
                     </div>
                 </div>
                 <div class="mt-8 flex justify-end gap-3">
@@ -433,9 +437,13 @@
                 </div>
 
                 <div class="flex gap-3">
-                    <button id="modal-delete-btn" onclick="window.deleteCustomEvent()" class="hidden flex-1 bg-red-600 hover:bg-red-700 text-white py-2.5 rounded-lg font-medium text-sm text-center transition-colors shadow flex items-center justify-center gap-2">
+                    <button id="modal-delete-btn" onclick="window.deleteCustomEvent()" class="hidden flex-1 bg-red-600 hover:bg-red-700 text-white py-2.5 rounded-lg font-medium text-sm text-center transition-colors shadow items-center justify-center gap-2">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
                         Delete Event
+                    </button>
+                    <button id="modal-edit-btn" onclick="window.editCustomEvent()" class="hidden flex-1 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-800 dark:text-white py-2.5 rounded-lg font-medium text-sm text-center transition-colors shadow items-center justify-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" /></svg>
+                        Edit Event
                     </button>
                     <a id="modal-syllabus-link" href="#" target="_blank" class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white py-2.5 rounded-lg font-medium text-sm text-center transition-colors shadow flex items-center justify-center gap-2">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
@@ -495,6 +503,14 @@
             'CME 304': '#059669', // Emerald
             'ESG 111': '#e11d48', // Rose
             'POL 102': '#d97706', // Amber
+            'Blue': '#2563eb',
+            'Green': '#059669',
+            'Red': '#e11d48',
+            'Orange': '#f97316',
+            'Purple': '#9333ea',
+            'Pink': '#db2777',
+            'Teal': '#0d9488',
+            'Gray': '#4b5563',
             'Other': '#4b5563'
         };
 
@@ -503,6 +519,14 @@
             'CME 304': { light: 'bg-emerald-100 border-emerald-300 text-emerald-900', dark: 'dark:bg-emerald-900/60 dark:border-emerald-700 dark:text-emerald-100' },
             'ESG 111': { light: 'bg-rose-100 border-rose-300 text-rose-900', dark: 'dark:bg-rose-900/60 dark:border-rose-700 dark:text-rose-100' },
             'POL 102': { light: 'bg-amber-100 border-amber-300 text-amber-900', dark: 'dark:bg-amber-900/60 dark:border-amber-700 dark:text-amber-100' },
+            'Blue': { light: 'bg-blue-100 border-blue-300 text-blue-900', dark: 'dark:bg-blue-900/60 dark:border-blue-700 dark:text-blue-100' },
+            'Green': { light: 'bg-emerald-100 border-emerald-300 text-emerald-900', dark: 'dark:bg-emerald-900/60 dark:border-emerald-700 dark:text-emerald-100' },
+            'Red': { light: 'bg-rose-100 border-rose-300 text-rose-900', dark: 'dark:bg-rose-900/60 dark:border-rose-700 dark:text-rose-100' },
+            'Orange': { light: 'bg-orange-100 border-orange-300 text-orange-900', dark: 'dark:bg-orange-900/60 dark:border-orange-700 dark:text-orange-100' },
+            'Purple': { light: 'bg-purple-100 border-purple-300 text-purple-900', dark: 'dark:bg-purple-900/60 dark:border-purple-700 dark:text-purple-100' },
+            'Pink': { light: 'bg-pink-100 border-pink-300 text-pink-900', dark: 'dark:bg-pink-900/60 dark:border-pink-700 dark:text-pink-100' },
+            'Teal': { light: 'bg-teal-100 border-teal-300 text-teal-900', dark: 'dark:bg-teal-900/60 dark:border-teal-700 dark:text-teal-100' },
+            'Gray': { light: 'bg-gray-100 border-gray-300 text-gray-900', dark: 'dark:bg-gray-800 dark:border-gray-600 dark:text-gray-300' },
             'default': { light: 'bg-gray-100 border-gray-300 text-gray-900', dark: 'dark:bg-gray-800 dark:border-gray-600 dark:text-gray-300' }
         };
 
@@ -564,6 +588,35 @@
             renderCalendar();
         };
         
+        window.openEventModal = (eventId = null) => {
+            const modal = document.getElementById('event-modal-overlay');
+            
+            if (eventId && typeof eventId === 'string') {
+                const event = customEvents.find(e => e.id === eventId);
+                if (event) {
+                    document.getElementById('event-modal-title').innerText = "Edit Custom Event";
+                    document.getElementById('event-id').value = event.id;
+                    document.getElementById('event-title').value = event.fullTitle || event.title;
+                    document.getElementById('event-day').value = event.day;
+                    document.getElementById('event-start').value = event.start;
+                    document.getElementById('event-end').value = event.end;
+                    document.getElementById('event-loc').value = event.loc || '';
+                    document.getElementById('event-color').value = event.color || 'Gray';
+                }
+            } else {
+                document.getElementById('event-modal-title').innerText = "Add Custom Event";
+                document.getElementById('event-form').reset();
+                document.getElementById('event-id').value = "";
+            }
+
+            modal.classList.remove('hidden');
+            requestAnimationFrame(() => {
+                modal.classList.remove('opacity-0');
+                const content = modal.querySelector('.modal-content');
+                content.classList.remove('scale-95', 'opacity-0');
+            });
+        };
+
         window.openAssignmentModal = (dateStr) => {
             const modal = document.getElementById('assignment-modal-overlay');
             document.getElementById('modal-form-title').innerText = "Add Assignment";
@@ -643,18 +696,18 @@
         window.handleEventSubmit = async (e) => {
             e.preventDefault();
             
+            const id = document.getElementById('event-id').value;
             const title = document.getElementById('event-title').value;
             const day = document.getElementById('event-day').value;
             const start = document.getElementById('event-start').value;
             const end = document.getElementById('event-end').value;
             const loc = document.getElementById('event-loc').value || 'TBD';
-            const colorCode = document.getElementById('event-color').value; 
+            const color = document.getElementById('event-color').value; 
             
-            const formattedTitle = colorCode !== 'Other' ? `${colorCode} - ${title}` : title;
-
             const data = {
                 day,
-                title: formattedTitle,
+                title: title,
+                color: color,
                 type: 'Custom Event',
                 start,
                 end,
@@ -665,8 +718,12 @@
             };
 
             if (!db || !auth) {
-                 data.id = Date.now().toString();
-                 customEvents.push(data);
+                 if (id) {
+                     customEvents = customEvents.map(ev => ev.id === id ? {id, ...data} : ev);
+                 } else {
+                     data.id = Date.now().toString();
+                     customEvents.push(data);
+                 }
                  localStorage.setItem('my_schedule_events', JSON.stringify(customEvents));
                  renderSchedule();
                  window.closeEventModal(null, true);
@@ -676,9 +733,13 @@
             if (!user) return;
 
             try {
-                await addDoc(collection(db, 'artifacts', appId, 'users', user.uid, 'events'), {
-                    ...data, createdAt: new Date()
-                });
+                if (id) {
+                    await updateDoc(doc(db, 'artifacts', appId, 'users', user.uid, 'events', id), data);
+                } else {
+                    await addDoc(collection(db, 'artifacts', appId, 'users', user.uid, 'events'), {
+                        ...data, createdAt: new Date()
+                    });
+                }
                 window.closeEventModal(null, true);
             } catch (err) {
                 console.error("Error saving event:", err);
@@ -693,15 +754,23 @@
                  customEvents = customEvents.filter(e => e.id !== eventId);
                  localStorage.setItem('my_schedule_events', JSON.stringify(customEvents));
                  renderSchedule();
-                 window.closeCourseModal(new Event('click'));
+                 window.closeCourseModal(null, true);
                  return;
             }
 
             if (user) {
                 try {
                     await deleteDoc(doc(db, 'artifacts', appId, 'users', user.uid, 'events', eventId));
-                    window.closeCourseModal(new Event('click'));
+                    window.closeCourseModal(null, true);
                 } catch (e) { console.error(e); }
+            }
+        };
+
+        window.editCustomEvent = () => {
+            const eventId = window.currentViewingEventId;
+            if (eventId) {
+                window.closeCourseModal(null, true);
+                window.openEventModal(eventId);
             }
         };
         
@@ -833,8 +902,8 @@
         window.openCourseModal = (eventDataStr) => {
             const data = JSON.parse(decodeURIComponent(eventDataStr));
             const modal = document.getElementById('course-modal-overlay');
-            const codeKey = data.title.substring(0, 7);
-            const rawHeaderColor = rawColors[codeKey] || rawColors['Other'];
+            let codeKey = data.isCustom ? (data.color || 'Gray') : data.title.substring(0, 7);
+            const rawHeaderColor = rawColors[codeKey] || rawColors['Gray'];
             
             document.getElementById('modal-header').style.backgroundColor = rawHeaderColor;
             document.getElementById('modal-title').innerText = data.title;
@@ -848,17 +917,22 @@
             
             const syllabusBtn = document.getElementById('modal-syllabus-link');
             const deleteBtn = document.getElementById('modal-delete-btn');
+            const editBtn = document.getElementById('modal-edit-btn');
 
             if (data.isCustom) {
                 window.currentViewingEventId = data.id;
                 deleteBtn.classList.remove('hidden');
                 deleteBtn.classList.add('flex');
+                editBtn.classList.remove('hidden');
+                editBtn.classList.add('flex');
                 syllabusBtn.classList.add('hidden');
                 syllabusBtn.classList.remove('flex');
             } else {
                 window.currentViewingEventId = null;
                 deleteBtn.classList.add('hidden');
                 deleteBtn.classList.remove('flex');
+                editBtn.classList.add('hidden');
+                editBtn.classList.remove('flex');
                 syllabusBtn.classList.remove('hidden');
                 syllabusBtn.classList.add('flex');
                 
@@ -905,8 +979,8 @@
             });
         };
 
-        window.closeCourseModal = (e) => {
-            if (e.target.id === 'course-modal-overlay' || e.currentTarget.tagName === 'BUTTON') {
+        window.closeCourseModal = (e, force = false) => {
+            if (force || (e && (e.target.id === 'course-modal-overlay' || e.currentTarget.tagName === 'BUTTON'))) {
                 const modal = document.getElementById('course-modal-overlay');
                 modal.classList.add('opacity-0');
                 const content = modal.querySelector('.modal-content');
@@ -1312,10 +1386,10 @@
                 const heightPercent = (durationMin / TOTAL_MINUTES) * 100;
                 
                 const card = document.createElement('div');
-                const codeKey = event.title.substring(0, 7);
+                let codeKey = event.isCustom ? (event.color || 'Gray') : event.title.substring(0, 7);
                 const colorSet = colors[codeKey] || colors['default'];
                 
-                card.className = `absolute inset-x-1 rounded border-l-4 p-2 text-xs flex flex-col overflow-hidden event-card cursor-pointer ${colorSet.light} ${colorSet.dark} justify-between`;
+                card.className = `absolute inset-x-1 rounded-xl border-l-4 p-3 text-xs flex flex-col overflow-hidden event-card cursor-pointer ${colorSet.light} ${colorSet.dark} justify-between`;
                 card.style.top = `${(startMin / TOTAL_MINUTES) * 100}%`;
                 card.style.height = `${heightPercent}%`;
                 card.onclick = () => window.openCourseModal(encodeURIComponent(JSON.stringify(event)));
