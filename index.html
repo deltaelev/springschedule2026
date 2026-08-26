@@ -82,7 +82,13 @@
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
                     Weekly Overview
                 </h2>
-                <div id="live-indicator-status" class="text-xs font-medium text-red-500 flex items-center gap-1 animate-pulse"><span class="w-2 h-2 bg-red-500 rounded-full"></span> LIVE</div>
+                <div class="flex items-center gap-3">
+                    <button onclick="window.openEventModal()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-1.5 rounded-lg text-sm font-medium transition-colors shadow flex items-center gap-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
+                        Add Event
+                    </button>
+                    <div id="live-indicator-status" class="text-xs font-medium text-red-500 flex items-center gap-1 animate-pulse"><span class="w-2 h-2 bg-red-500 rounded-full"></span> LIVE</div>
+                </div>
             </div>
             
             <div class="relative overflow-x-auto">
@@ -218,6 +224,61 @@
                 </div>
                 <div class="mt-8 flex justify-end gap-3">
                     <button type="button" onclick="window.closeAssignmentModal(null, true)" class="px-5 py-2.5 text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg">Cancel</button>
+                    <button type="submit" class="px-5 py-2.5 text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 rounded-lg shadow">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- EVENT MODAL -->
+    <div id="event-modal-overlay" class="fixed inset-0 z-[120] bg-black/50 backdrop-blur-sm hidden flex items-center justify-center p-4 opacity-0 transition-opacity" onclick="window.closeEventModal(event)">
+        <div class="modal-content bg-white dark:bg-gray-900 rounded-2xl shadow-2xl max-w-md w-full overflow-hidden transform scale-95 opacity-0 transition-all p-8">
+            <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-6">Add Custom Event</h3>
+            <form id="event-form" onsubmit="window.handleEventSubmit(event)">
+                <div class="space-y-5">
+                    <div>
+                        <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Event Title</label>
+                        <input type="text" id="event-title" required class="w-full rounded-lg border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white p-3 text-base focus:ring-2 focus:ring-indigo-500 focus:outline-none" placeholder="e.g. Study Group">
+                    </div>
+                    <div class="grid grid-cols-2 gap-5">
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Day</label>
+                            <select id="event-day" class="w-full rounded-lg border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white p-3 text-base focus:ring-2 focus:ring-indigo-500">
+                                <option value="mon">Monday</option>
+                                <option value="tue">Tuesday</option>
+                                <option value="wed">Wednesday</option>
+                                <option value="thu">Thursday</option>
+                                <option value="fri">Friday</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Color</label>
+                            <select id="event-color" class="w-full rounded-lg border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white p-3 text-base focus:ring-2 focus:ring-indigo-500">
+                                <option value="Other">Gray (Default)</option>
+                                <option value="AMS 261">Blue (AMS)</option>
+                                <option value="CME 304">Green (CME)</option>
+                                <option value="ESG 111">Red (ESG)</option>
+                                <option value="POL 102">Orange (POL)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-5">
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Start Time</label>
+                            <input type="time" id="event-start" required class="w-full rounded-lg border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white p-3 text-base focus:ring-2 focus:ring-indigo-500">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">End Time</label>
+                            <input type="time" id="event-end" required class="w-full rounded-lg border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white p-3 text-base focus:ring-2 focus:ring-indigo-500">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Location (Optional)</label>
+                        <input type="text" id="event-loc" class="w-full rounded-lg border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white p-3 text-base focus:ring-2 focus:ring-indigo-500 focus:outline-none" placeholder="e.g. Library">
+                    </div>
+                </div>
+                <div class="mt-8 flex justify-end gap-3">
+                    <button type="button" onclick="window.closeEventModal(null, true)" class="px-5 py-2.5 text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg">Cancel</button>
                     <button type="submit" class="px-5 py-2.5 text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 rounded-lg shadow">Save</button>
                 </div>
             </form>
@@ -372,6 +433,10 @@
                 </div>
 
                 <div class="flex gap-3">
+                    <button id="modal-delete-btn" onclick="window.deleteCustomEvent()" class="hidden flex-1 bg-red-600 hover:bg-red-700 text-white py-2.5 rounded-lg font-medium text-sm text-center transition-colors shadow flex items-center justify-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                        Delete Event
+                    </button>
                     <a id="modal-syllabus-link" href="#" target="_blank" class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white py-2.5 rounded-lg font-medium text-sm text-center transition-colors shadow flex items-center justify-center gap-2">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
                         View Syllabus
@@ -391,6 +456,7 @@
         let db, auth, user;
         let appId = 'default-app-id';
         let assignments = [];
+        let customEvents = [];
         let currentCalendarDate = new Date();
         let assignmentToDelete = null;
         let timerInterval = null;
@@ -550,6 +616,94 @@
                 }, 200);
             }
         };
+
+        window.openEventModal = () => {
+            const modal = document.getElementById('event-modal-overlay');
+            modal.classList.remove('hidden');
+            requestAnimationFrame(() => {
+                modal.classList.remove('opacity-0');
+                const content = modal.querySelector('.modal-content');
+                content.classList.remove('scale-95', 'opacity-0');
+            });
+        };
+
+        window.closeEventModal = (e, force = false) => {
+            if (force || e.target.id === 'event-modal-overlay') {
+                const modal = document.getElementById('event-modal-overlay');
+                modal.classList.add('opacity-0');
+                const content = modal.querySelector('.modal-content');
+                content.classList.add('scale-95', 'opacity-0');
+                setTimeout(() => {
+                    modal.classList.add('hidden');
+                    document.getElementById('event-form').reset();
+                }, 200);
+            }
+        };
+        
+        window.handleEventSubmit = async (e) => {
+            e.preventDefault();
+            
+            const title = document.getElementById('event-title').value;
+            const day = document.getElementById('event-day').value;
+            const start = document.getElementById('event-start').value;
+            const end = document.getElementById('event-end').value;
+            const loc = document.getElementById('event-loc').value || 'TBD';
+            const colorCode = document.getElementById('event-color').value; 
+            
+            const formattedTitle = colorCode !== 'Other' ? `${colorCode} - ${title}` : title;
+
+            const data = {
+                day,
+                title: formattedTitle,
+                type: 'Custom Event',
+                start,
+                end,
+                loc,
+                prof: 'Self',
+                fullTitle: title,
+                isCustom: true
+            };
+
+            if (!db || !auth) {
+                 data.id = Date.now().toString();
+                 customEvents.push(data);
+                 localStorage.setItem('my_schedule_events', JSON.stringify(customEvents));
+                 renderSchedule();
+                 window.closeEventModal(null, true);
+                 return;
+            }
+
+            if (!user) return;
+
+            try {
+                await addDoc(collection(db, 'artifacts', appId, 'users', user.uid, 'events'), {
+                    ...data, createdAt: new Date()
+                });
+                window.closeEventModal(null, true);
+            } catch (err) {
+                console.error("Error saving event:", err);
+            }
+        };
+
+        window.deleteCustomEvent = async () => {
+            const eventId = window.currentViewingEventId;
+            if (!eventId) return;
+
+            if (!db || !auth) {
+                 customEvents = customEvents.filter(e => e.id !== eventId);
+                 localStorage.setItem('my_schedule_events', JSON.stringify(customEvents));
+                 renderSchedule();
+                 window.closeCourseModal(new Event('click'));
+                 return;
+            }
+
+            if (user) {
+                try {
+                    await deleteDoc(doc(db, 'artifacts', appId, 'users', user.uid, 'events', eventId));
+                    window.closeCourseModal(new Event('click'));
+                } catch (e) { console.error(e); }
+            }
+        };
         
         // --- STREAMING_CHUNK:Implementing assignment submission and Firebase sync logic... ---
         window.handleAssignmentSubmit = async (e) => {
@@ -693,14 +847,30 @@
             document.getElementById('modal-loc-link').href = `https://www.google.com/maps/search/?api=1&query=${mapQuery}`;
             
             const syllabusBtn = document.getElementById('modal-syllabus-link');
-            if (data.syllabusUrl && data.syllabusUrl !== '#') {
-                syllabusBtn.href = data.syllabusUrl;
-                syllabusBtn.classList.remove('opacity-50', 'cursor-not-allowed');
-                syllabusBtn.innerText = "View Syllabus";
+            const deleteBtn = document.getElementById('modal-delete-btn');
+
+            if (data.isCustom) {
+                window.currentViewingEventId = data.id;
+                deleteBtn.classList.remove('hidden');
+                deleteBtn.classList.add('flex');
+                syllabusBtn.classList.add('hidden');
+                syllabusBtn.classList.remove('flex');
             } else {
-                syllabusBtn.href = "#";
-                syllabusBtn.classList.add('opacity-50', 'cursor-not-allowed');
-                syllabusBtn.innerText = "No Syllabus Link";
+                window.currentViewingEventId = null;
+                deleteBtn.classList.add('hidden');
+                deleteBtn.classList.remove('flex');
+                syllabusBtn.classList.remove('hidden');
+                syllabusBtn.classList.add('flex');
+                
+                if (data.syllabusUrl && data.syllabusUrl !== '#') {
+                    syllabusBtn.href = data.syllabusUrl;
+                    syllabusBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                    syllabusBtn.innerText = "View Syllabus";
+                } else {
+                    syllabusBtn.href = "#";
+                    syllabusBtn.classList.add('opacity-50', 'cursor-not-allowed');
+                    syllabusBtn.innerText = "No Syllabus Link";
+                }
             }
 
             // Exams logic
@@ -1119,7 +1289,9 @@
             });
 
             // Render Events
-            schedule.forEach(event => {
+            const combinedSchedule = [...schedule, ...customEvents];
+            
+            combinedSchedule.forEach(event => {
                 const container = document.getElementById(`col-${event.day}`);
                 if (!container) return;
                 
@@ -1160,6 +1332,10 @@
              const saved = localStorage.getItem('my_schedule_data');
              if (saved) {
                 try { assignments = JSON.parse(saved); } catch(e) {}
+             }
+             const savedEvents = localStorage.getItem('my_schedule_events');
+             if (savedEvents) {
+                try { customEvents = JSON.parse(savedEvents); } catch(e) {}
              }
 
              try {
@@ -1236,6 +1412,14 @@
             }, (error) => {
                  console.error("Firestore Error", error);
                  document.getElementById('auth-status').innerText = 'Local Mode';
+            });
+            
+            // Listen for custom schedule events
+            const qEvents = query(collection(db, 'artifacts', appId, 'users', user.uid, 'events'));
+            onSnapshot(qEvents, (snapshot) => {
+                customEvents = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                localStorage.setItem('my_schedule_events', JSON.stringify(customEvents));
+                renderSchedule();
             });
         }
         
