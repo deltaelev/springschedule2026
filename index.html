@@ -696,16 +696,6 @@
             }
         };
 
-        window.openEventModal = () => {
-            const modal = document.getElementById('event-modal-overlay');
-            modal.classList.remove('hidden');
-            requestAnimationFrame(() => {
-                modal.classList.remove('opacity-0');
-                const content = modal.querySelector('.modal-content');
-                content.classList.remove('scale-95', 'opacity-0');
-            });
-        };
-
         window.closeEventModal = (e, force = false) => {
             if (force || e.target.id === 'event-modal-overlay') {
                 const modal = document.getElementById('event-modal-overlay');
