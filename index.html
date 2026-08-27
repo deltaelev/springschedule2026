@@ -305,8 +305,26 @@
                         </div>
                     </div>
 
-                    <div class="mt-1">
-                        <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-4">Color</label>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Color</label>
+                        <select id="event-color" class="w-full rounded-lg border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white py-4 px-5 text-base focus:ring-2 focus:ring-indigo-500 cursor-pointer">
+                            <option value="Gray">Gray (Default)</option>
+                            <option value="Blue">Blue</option>
+                            <option value="Green">Green</option>
+                            <option value="Red">Red</option>
+                            <option value="Orange">Orange</option>
+                            <option value="Purple">Purple</option>
+                            <option value="Pink">Pink</option>
+                            <option value="Teal">Teal</option>
+                        </select>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Start Time</label>
+                            <input type="time" id="event-start" required class="w-full rounded-lg border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white p-3.5 text-base focus:ring-2 focus:ring-indigo-500">
+                        </div>
+                        <div>
                             <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">End Time</label>
                             <input type="time" id="event-end" required class="w-full rounded-lg border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white p-3.5 text-base focus:ring-2 focus:ring-indigo-500">
                         </div>
@@ -1598,6 +1616,9 @@
                 try { customEvents = JSON.parse(savedEvents); } catch(e) {}
              }
 
+             // LOAD UI IMMEDIATELY - Don't wait for the database!
+             init();
+
              try {
                 let firebaseConfig;
 
@@ -1648,12 +1669,7 @@
                 console.warn("Running in local mode:", e);
                 document.getElementById('auth-status').innerText = "Local Mode";
                 document.getElementById('auth-status').classList.remove('hidden');
-                // Ensure render happens even if firebase fails
-                renderCalendar();
             }
-            
-            // Initial Render
-            init();
         }
 
         function setupFirestoreListeners() {
