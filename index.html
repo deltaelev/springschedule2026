@@ -299,6 +299,10 @@
                         <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Location (Optional)</label>
                         <input type="text" id="event-loc" class="w-full rounded-lg border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white p-3.5 text-base focus:ring-2 focus:ring-indigo-500 focus:outline-none" placeholder="e.g. Library">
                     </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Link / URL (Optional)</label>
+                        <input type="url" id="event-url" class="w-full rounded-lg border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white p-3.5 text-base focus:ring-2 focus:ring-indigo-500 focus:outline-none" placeholder="e.g. https://zoom.us/...">
+                    </div>
                 </div>
                 <div class="mt-8 flex justify-end gap-3">
                     <button type="button" onclick="window.closeEventModal(null, true)" class="px-5 py-2.5 text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg">Cancel</button>
@@ -448,11 +452,11 @@
                 </div>
 
                 <div class="bg-gray-50 dark:bg-gray-800/50 rounded-xl p-4 border border-gray-100 dark:border-gray-700">
-                    <h4 class="text-sm font-semibold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
+                    <h4 id="modal-dynamic-header" class="text-sm font-semibold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
                         Upcoming Exams
                     </h4>
-                    <div id="modal-exam-grid" class="grid grid-cols-2 gap-4"></div>
+                    <div id="modal-dynamic-content" class="grid grid-cols-2 gap-4"></div>
                 </div>
 
                 <div class="flex gap-3">
@@ -625,12 +629,14 @@
                     document.getElementById('event-start').value = event.start;
                     document.getElementById('event-end').value = event.end;
                     document.getElementById('event-loc').value = event.loc || '';
+                    document.getElementById('event-url').value = event.url || '';
                     document.getElementById('event-color').value = event.color || 'Gray';
                 }
             } else {
                 document.getElementById('event-modal-title').innerText = "Add Custom Event";
                 document.getElementById('event-form').reset();
                 document.getElementById('event-id').value = "";
+                document.getElementById('event-url').value = "";
                 // Uncheck all by default for a new event
                 document.querySelectorAll('input[name="event-days"]').forEach(cb => cb.checked = false);
             }
@@ -717,6 +723,7 @@
             const start = document.getElementById('event-start').value;
             const end = document.getElementById('event-end').value;
             const loc = document.getElementById('event-loc').value || 'TBD';
+            const url = document.getElementById('event-url').value || '';
             const color = document.getElementById('event-color').value; 
             
             // Get all checked days
@@ -735,6 +742,7 @@
                 start,
                 end,
                 loc,
+                url,
                 prof: 'Self',
                 fullTitle: title,
                 isCustom: true
@@ -981,28 +989,51 @@
                 }
             }
 
-            // Exams logic
-            const examGrid = document.getElementById('modal-exam-grid');
-            examGrid.innerHTML = '';
-            if (data.exams && data.exams.length > 0) {
-                const getDays = (d) => Math.ceil((new Date(d) - new Date()) / (1000 * 60 * 60 * 24));
-                data.exams.forEach(exam => {
-                    const daysLeft = getDays(exam.date);
-                    let countText = "--", countClass = "text-xl font-bold text-gray-400";
-                    if (daysLeft < 0) countText = "Done";
-                    else {
-                        countText = daysLeft;
-                        countClass = "text-xl font-bold text-indigo-600 dark:text-indigo-400";
-                    }
-                    const dateText = new Date(exam.date).toLocaleDateString('en-US', {month:'short', day:'numeric'});
-                    
-                    const card = document.createElement('div');
-                    card.className = "bg-white dark:bg-gray-800 p-3 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 text-center";
-                    card.innerHTML = `<p class="text-xs text-gray-500 uppercase truncate">${exam.name}</p><p class="${countClass}">${countText}</p><p class="text-[10px] text-gray-400">Days Left</p><p class="text-[10px] text-gray-500 border-t border-gray-100 dark:border-gray-700 mt-1 pt-1">${dateText}</p>`;
-                    examGrid.appendChild(card);
-                });
+            // Dynamic content section (Exams vs Links)
+            const dynamicHeader = document.getElementById('modal-dynamic-header');
+            const dynamicContent = document.getElementById('modal-dynamic-content');
+            dynamicContent.innerHTML = '';
+            
+            if (data.isCustom) {
+                dynamicHeader.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" /></svg> Event Link & Resources`;
+                dynamicContent.className = "flex flex-col gap-2";
+                
+                if (data.url && data.url.trim() !== '') {
+                    let displayUrl = data.url.replace(/^https?:\/\//, '');
+                    dynamicContent.innerHTML = `<a href="${data.url.startsWith('http') ? data.url : 'https://' + data.url}" target="_blank" class="flex items-center gap-3 p-3 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-indigo-500 hover:ring-1 hover:ring-indigo-500 transition-all group">
+                        <div class="bg-indigo-50 dark:bg-indigo-900/50 p-2 rounded-md text-indigo-600 dark:text-indigo-400 group-hover:scale-110 transition-transform"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z" /><path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z" /></svg></div>
+                        <div class="overflow-hidden">
+                            <p class="text-xs font-bold text-gray-900 dark:text-white truncate">Open Event Link</p>
+                            <p class="text-[10px] text-gray-500 truncate">${displayUrl}</p>
+                        </div>
+                    </a>`;
+                } else {
+                    dynamicContent.innerHTML = `<div class="w-full text-center text-sm text-gray-400 italic py-2">No link provided.</div>`;
+                }
             } else {
-                examGrid.innerHTML = `<div class="col-span-2 text-center text-sm text-gray-400 italic py-2">No exams listed.</div>`;
+                dynamicHeader.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg> Upcoming Exams`;
+                dynamicContent.className = "grid grid-cols-2 gap-4";
+
+                if (data.exams && data.exams.length > 0) {
+                    const getDays = (d) => Math.ceil((new Date(d) - new Date()) / (1000 * 60 * 60 * 24));
+                    data.exams.forEach(exam => {
+                        const daysLeft = getDays(exam.date);
+                        let countText = "--", countClass = "text-xl font-bold text-gray-400";
+                        if (daysLeft < 0) countText = "Done";
+                        else {
+                            countText = daysLeft;
+                            countClass = "text-xl font-bold text-indigo-600 dark:text-indigo-400";
+                        }
+                        const dateText = new Date(exam.date).toLocaleDateString('en-US', {month:'short', day:'numeric'});
+                        
+                        const card = document.createElement('div');
+                        card.className = "bg-white dark:bg-gray-800 p-3 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 text-center";
+                        card.innerHTML = `<p class="text-xs text-gray-500 uppercase truncate">${exam.name}</p><p class="${countClass}">${countText}</p><p class="text-[10px] text-gray-400">Days Left</p><p class="text-[10px] text-gray-500 border-t border-gray-100 dark:border-gray-700 mt-1 pt-1">${dateText}</p>`;
+                        dynamicContent.appendChild(card);
+                    });
+                } else {
+                    dynamicContent.innerHTML = `<div class="col-span-2 text-center text-sm text-gray-400 italic py-2">No exams listed.</div>`;
+                }
             }
 
             modal.classList.remove('hidden');
