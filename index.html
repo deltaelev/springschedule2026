@@ -79,11 +79,27 @@
         
         <!-- Visual Schedule Section -->
         <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden flex flex-col transition-colors duration-200">
-            <div class="p-4 border-b border-gray-100 dark:border-gray-700 bg-gray-50 dark:bg-gray-850 flex justify-between items-center relative z-40">
-                <h2 class="font-semibold text-gray-700 dark:text-gray-200 flex items-center gap-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
-                    Weekly Overview
-                </h2>
+            <div class="p-4 border-b border-gray-100 dark:border-gray-700 bg-gray-50 dark:bg-gray-850 flex justify-between items-center relative z-40 flex-wrap gap-4">
+                <div class="flex items-center gap-4">
+                    <h2 class="font-semibold text-gray-700 dark:text-gray-200 flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                        Weekly Overview
+                    </h2>
+                    
+                    <!-- Weekly Nav -->
+                    <div class="flex items-center bg-white dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600 p-1 shadow-sm">
+                        <button onclick="window.changeWeek(-1)" class="p-1 hover:bg-gray-100 dark:hover:bg-gray-600 rounded text-gray-500 dark:text-gray-400 transition-colors">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg>
+                        </button>
+                        <span id="week-date-range" class="px-3 text-sm font-bold text-gray-700 dark:text-gray-200 min-w-[130px] text-center">Loading...</span>
+                        <button onclick="window.changeWeek(1)" class="p-1 hover:bg-gray-100 dark:hover:bg-gray-600 rounded text-gray-500 dark:text-gray-400 transition-colors">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
+                        </button>
+                        <div class="w-px h-4 bg-gray-300 dark:bg-gray-600 mx-1"></div>
+                        <button onclick="window.resetWeek()" class="px-2 py-1 text-xs font-semibold text-indigo-600 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 rounded transition-colors">Today</button>
+                    </div>
+                </div>
+                
                 <div class="flex items-center gap-3">
                     <button onclick="window.openEventModal()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-1.5 rounded-lg text-sm font-medium transition-colors shadow flex items-center gap-1">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
@@ -108,11 +124,11 @@
                     <div class="flex-1 relative bg-white dark:bg-gray-800 transition-colors duration-200">
                         <!-- Days Row (Sticky top-0 to prevent clipping over classes) -->
                         <div class="grid grid-cols-5 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-850 sticky top-0 z-[50] shadow-sm transition-colors duration-200 h-10 items-center">
-                            <div class="text-center font-semibold text-gray-700 dark:text-gray-300 text-sm">Mon</div>
-                            <div class="text-center font-semibold text-gray-700 dark:text-gray-300 text-sm">Tue</div>
-                            <div class="text-center font-semibold text-gray-700 dark:text-gray-300 text-sm">Wed</div>
-                            <div class="text-center font-semibold text-gray-700 dark:text-gray-300 text-sm">Thu</div>
-                            <div class="text-center font-semibold text-gray-700 dark:text-gray-300 text-sm">Fri</div>
+                            <div id="header-mon" class="text-center font-semibold text-gray-700 dark:text-gray-300 text-sm flex flex-col justify-center leading-tight">Mon</div>
+                            <div id="header-tue" class="text-center font-semibold text-gray-700 dark:text-gray-300 text-sm flex flex-col justify-center leading-tight">Tue</div>
+                            <div id="header-wed" class="text-center font-semibold text-gray-700 dark:text-gray-300 text-sm flex flex-col justify-center leading-tight">Wed</div>
+                            <div id="header-thu" class="text-center font-semibold text-gray-700 dark:text-gray-300 text-sm flex flex-col justify-center leading-tight">Thu</div>
+                            <div id="header-fri" class="text-center font-semibold text-gray-700 dark:text-gray-300 text-sm flex flex-col justify-center leading-tight">Fri</div>
                         </div>
                         <div class="grid grid-cols-5 h-[1200px] relative" id="schedule-container">
                             <div class="absolute inset-0 pointer-events-none grid grid-rows-[repeat(11,1fr)] w-full h-full z-0">
@@ -244,8 +260,26 @@
                         <input type="text" id="event-title" required class="w-full rounded-lg border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white p-3.5 text-base focus:ring-2 focus:ring-indigo-500 focus:outline-none" placeholder="e.g. Study Group">
                     </div>
                     
-                    <!-- NEW DAYS CHECKBOXES -->
                     <div>
+                        <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Event Type</label>
+                        <div class="flex gap-4">
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="radio" name="event-type-toggle" value="single" checked onchange="window.toggleEventType()" class="text-indigo-600 focus:ring-indigo-500 w-4 h-4">
+                                <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Single Date</span>
+                            </label>
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="radio" name="event-type-toggle" value="repeat" onchange="window.toggleEventType()" class="text-indigo-600 focus:ring-indigo-500 w-4 h-4">
+                                <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Repeat Weekly</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div id="single-date-selector">
+                        <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Event Date</label>
+                        <input type="date" id="event-date" class="w-full rounded-lg border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white p-3.5 text-base focus:ring-2 focus:ring-indigo-500">
+                    </div>
+
+                    <div id="repeat-days-selector" class="hidden">
                         <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Days (Select Multiple)</label>
                         <div class="flex gap-2">
                             <label class="flex-1 cursor-pointer">
@@ -271,26 +305,8 @@
                         </div>
                     </div>
 
-                    <div class="col-span-2 mt-1">
-                        <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Color</label>
-                        <select id="event-color" class="w-full h-14 rounded-lg border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white px-4 text-base focus:ring-2 focus:ring-indigo-500">
-                            <option value="Gray">Gray (Default)</option>
-                            <option value="Blue">Blue</option>
-                            <option value="Green">Green</option>
-                            <option value="Red">Red</option>
-                            <option value="Orange">Orange</option>
-                            <option value="Purple">Purple</option>
-                            <option value="Pink">Pink</option>
-                            <option value="Teal">Teal</option>
-                        </select>
-                    </div>
-
-                    <div class="grid grid-cols-2 gap-6">
-                        <div>
-                            <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Start Time</label>
-                            <input type="time" id="event-start" required class="w-full rounded-lg border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white p-3.5 text-base focus:ring-2 focus:ring-indigo-500">
-                        </div>
-                        <div>
+                    <div class="mt-1">
+                        <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-4">Color</label>
                             <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">End Time</label>
                             <input type="time" id="event-end" required class="w-full rounded-lg border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white p-3.5 text-base focus:ring-2 focus:ring-indigo-500">
                         </div>
@@ -489,6 +505,7 @@
         let assignments = [];
         let customEvents = [];
         let currentCalendarDate = new Date();
+        let currentWeekStart = new Date();
         let assignmentToDelete = null;
         let timerInterval = null;
         let timeUpdateInterval = null;
@@ -502,6 +519,15 @@
         const START_HOUR = 8;
         const END_HOUR = 19;
         const TOTAL_MINUTES = (END_HOUR - START_HOUR) * 60;
+
+        const initCurrentWeek = () => {
+            currentWeekStart = new Date();
+            const day = currentWeekStart.getDay();
+            const diff = currentWeekStart.getDate() - day + (day === 0 ? -6 : 1); // Adjust to Monday
+            currentWeekStart = new Date(currentWeekStart.setDate(diff));
+            currentWeekStart.setHours(0,0,0,0);
+        };
+        initCurrentWeek();
 
         // --- DATA CONSTANTS ---
         const schedule = [
@@ -610,6 +636,27 @@
             currentCalendarDate.setMonth(currentCalendarDate.getMonth() + delta);
             renderCalendar();
         };
+
+        window.changeWeek = (delta) => {
+            currentWeekStart.setDate(currentWeekStart.getDate() + (delta * 7));
+            renderSchedule();
+        };
+
+        window.resetWeek = () => {
+            initCurrentWeek();
+            renderSchedule();
+        };
+
+        window.toggleEventType = () => {
+            const isRepeat = document.querySelector('input[name="event-type-toggle"]:checked').value === 'repeat';
+            if (isRepeat) {
+                document.getElementById('single-date-selector').classList.add('hidden');
+                document.getElementById('repeat-days-selector').classList.remove('hidden');
+            } else {
+                document.getElementById('single-date-selector').classList.remove('hidden');
+                document.getElementById('repeat-days-selector').classList.add('hidden');
+            }
+        };
         
         window.openEventModal = (eventId = null) => {
             const modal = document.getElementById('event-modal-overlay');
@@ -621,10 +668,16 @@
                     document.getElementById('event-id').value = event.id;
                     document.getElementById('event-title').value = event.fullTitle || event.title;
                     
-                    // Reset all checkboxes, then check the one for this event
-                    document.querySelectorAll('input[name="event-days"]').forEach(cb => cb.checked = false);
-                    const dayCheckbox = document.querySelector(`input[name="event-days"][value="${event.day}"]`);
-                    if(dayCheckbox) dayCheckbox.checked = true;
+                    if (event.date) {
+                        document.querySelector('input[name="event-type-toggle"][value="single"]').checked = true;
+                        document.getElementById('event-date').value = event.date;
+                    } else {
+                        document.querySelector('input[name="event-type-toggle"][value="repeat"]').checked = true;
+                        document.querySelectorAll('input[name="event-days"]').forEach(cb => cb.checked = false);
+                        const dayCheckbox = document.querySelector(`input[name="event-days"][value="${event.day}"]`);
+                        if(dayCheckbox) dayCheckbox.checked = true;
+                    }
+                    window.toggleEventType();
 
                     document.getElementById('event-start').value = event.start;
                     document.getElementById('event-end').value = event.end;
@@ -637,8 +690,21 @@
                 document.getElementById('event-form').reset();
                 document.getElementById('event-id').value = "";
                 document.getElementById('event-url').value = "";
-                // Uncheck all by default for a new event
                 document.querySelectorAll('input[name="event-days"]').forEach(cb => cb.checked = false);
+                
+                document.querySelector('input[name="event-type-toggle"][value="single"]').checked = true;
+                window.toggleEventType();
+                
+                // Default the date to Monday if they are adding on a weekend, otherwise today
+                const today = new Date();
+                const dayNum = today.getDay();
+                let targetDate = new Date(today);
+                if (dayNum === 0 || dayNum === 6) {
+                    const diff = targetDate.getDate() - dayNum + (dayNum === 0 ? -6 : 1);
+                    targetDate = new Date(targetDate.setDate(diff + 7)); // Next Monday
+                }
+                const todayStr = targetDate.toISOString().split('T')[0];
+                document.getElementById('event-date').value = todayStr;
             }
 
             modal.classList.remove('hidden');
@@ -726,15 +792,9 @@
             const url = document.getElementById('event-url').value || '';
             const color = document.getElementById('event-color').value; 
             
-            // Get all checked days
-            const selectedDays = Array.from(document.querySelectorAll('input[name="event-days"]:checked')).map(cb => cb.value);
-            
-            if (selectedDays.length === 0) {
-                alert("Please select at least one day.");
-                return;
-            }
+            const isRepeat = document.querySelector('input[name="event-type-toggle"]:checked').value === 'repeat';
+            let eventsToCreate = [];
 
-            // Create a base data object
             const baseData = {
                 title: title,
                 color: color,
@@ -748,16 +808,35 @@
                 isCustom: true
             };
 
+            if (isRepeat) {
+                const selectedDays = Array.from(document.querySelectorAll('input[name="event-days"]:checked')).map(cb => cb.value);
+                if (selectedDays.length === 0) {
+                    alert("Please select at least one day for a repeating event.");
+                    return;
+                }
+                selectedDays.forEach(day => {
+                    eventsToCreate.push({ day, date: null, ...baseData });
+                });
+            } else {
+                const dateVal = document.getElementById('event-date').value;
+                if (!dateVal) { alert("Please select a date."); return; }
+                const d = new Date(dateVal + 'T00:00:00');
+                const dayNum = d.getDay();
+                if (dayNum === 0 || dayNum === 6) {
+                    alert("Please select a weekday (Mon-Fri). Weekends are not shown on this grid.");
+                    return;
+                }
+                const dayStr = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'][dayNum];
+                eventsToCreate.push({ date: dateVal, day: dayStr, ...baseData });
+            }
+
             if (!db || !auth) {
                  if (id) {
-                     // If editing, we assume they only checked ONE day. 
-                     // Complex edits (like changing 1 event into 3 events) require deleting and recreating in this simple system.
-                     const day = selectedDays[0];
-                     customEvents = customEvents.map(ev => ev.id === id ? {id, day, ...baseData} : ev);
+                     const evData = eventsToCreate[0];
+                     customEvents = customEvents.map(ev => ev.id === id ? {id, ...evData} : ev);
                  } else {
-                     // Add a new event for EACH selected day
-                     selectedDays.forEach(day => {
-                         customEvents.push({ id: Date.now().toString() + Math.random().toString(36).substring(7), day, ...baseData });
+                     eventsToCreate.forEach(evData => {
+                         customEvents.push({ id: Date.now().toString() + Math.random().toString(36).substring(7), ...evData });
                      });
                  }
                  localStorage.setItem('my_schedule_events', JSON.stringify(customEvents));
@@ -770,14 +849,12 @@
 
             try {
                 if (id) {
-                     // Simple edit mode updates the first selected day
-                     const day = selectedDays[0];
-                    await updateDoc(doc(db, 'artifacts', appId, 'users', user.uid, 'events', id), { day, ...baseData });
+                    const evData = eventsToCreate[0];
+                    await updateDoc(doc(db, 'artifacts', appId, 'users', user.uid, 'events', id), evData);
                 } else {
-                    // Create multiple documents for multiple days
-                    const promises = selectedDays.map(day => {
+                    const promises = eventsToCreate.map(evData => {
                         return addDoc(collection(db, 'artifacts', appId, 'users', user.uid, 'events'), {
-                            day, ...baseData, createdAt: new Date()
+                            ...evData, createdAt: new Date()
                         });
                     });
                     await Promise.all(promises);
@@ -1410,25 +1487,69 @@
                 }
             }
             
-            // Clear columns and highlight today
+            // Calculate and display dates for the current week
+            const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+            const weekDates = [];
+            for(let i=0; i<5; i++) {
+                const d = new Date(currentWeekStart);
+                d.setDate(d.getDate() + i);
+                weekDates.push(d);
+            }
+
+            const rangeStr = `${monthNames[weekDates[0].getMonth()]} ${weekDates[0].getDate()} - ${monthNames[weekDates[4].getMonth()]} ${weekDates[4].getDate()}`;
+            const rangeEl = document.getElementById('week-date-range');
+            if (rangeEl) rangeEl.innerText = rangeStr;
+
+            const dayNames = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'];
+            const today = new Date();
             const daysArr = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'];
-            const todayKey = daysArr[new Date().getDay()];
+            const todayKey = daysArr[today.getDay()];
+            const isCurrentWeek = weekDates.some(d => d.toDateString() === today.toDateString());
+
+            dayNames.forEach((d, i) => {
+                const el = document.getElementById(`header-${d.toLowerCase()}`);
+                if(el) {
+                    const isToday = today.toDateString() === weekDates[i].toDateString();
+                    const textColor = isToday ? 'text-indigo-600 dark:text-indigo-400 font-bold' : 'text-gray-700 dark:text-gray-300 font-semibold';
+                    el.innerHTML = `<span class="${textColor}">${d} <span class="text-xs opacity-75 ml-1">${weekDates[i].getDate()}</span></span>`;
+                }
+            });
             
+            // Clear columns and highlight today
             ['mon','tue','wed','thu','fri'].forEach(d => {
                 const col = document.getElementById(`col-${d}`);
                 if(col) {
                     col.innerHTML = '';
-                    // Highlight the current day's column slightly
-                    if (d === todayKey) {
+                    if (isCurrentWeek && d === todayKey) {
                         col.classList.add('bg-indigo-50/40', 'dark:bg-indigo-900/20');
                     } else {
                         col.classList.remove('bg-indigo-50/40', 'dark:bg-indigo-900/20');
                     }
                 }
             });
+            
+            // Format week dates to string to compare with custom event dates
+            const weekDateStrings = weekDates.map(d => {
+                const yyyy = d.getFullYear();
+                const mm = String(d.getMonth() + 1).padStart(2, '0');
+                const dd = String(d.getDate()).padStart(2, '0');
+                return `${yyyy}-${mm}-${dd}`;
+            });
 
-            // Render Events
-            const combinedSchedule = [...schedule, ...customEvents];
+            // Merge Repeating Schedule with Single Date Custom Events
+            const combinedSchedule = [...schedule];
+            
+            customEvents.forEach(event => {
+                if (event.date) {
+                    // Only show single-date events if they fall into the week we are currently viewing
+                    if (weekDateStrings.includes(event.date)) {
+                        combinedSchedule.push(event);
+                    }
+                } else {
+                    // Always show repeating events
+                    combinedSchedule.push(event);
+                }
+            });
             
             combinedSchedule.forEach(event => {
                 const container = document.getElementById(`col-${event.day}`);
