@@ -4,8 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Fall Schedule</title>
-    <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/494.png">
-    <link rel="shortcut icon" type="image/png" href="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/494.png">
+    
+    <!-- Standard Favicons -->
+    <link rel="icon" type="image/png" href="Pokemans_494.gif-2.png">
+    <link rel="shortcut icon" type="image/png" href="Pokemans_494.gif-2.png">
+    
+    <!-- Apple/Safari Specific Icons -->
+    <link rel="apple-touch-icon" sizes="180x180" href="Pokemans_494.gif-2.png">
+    <link rel="apple-touch-icon" href="Pokemans_494.gif-2.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -547,10 +556,11 @@
         };
         initCurrentWeek();
 
+        // --- STREAMING_CHUNK:Loading core data... ---
         // --- DATA CONSTANTS ---
         const schedule = [
             // Monday
-            { day: 'mon', title: 'AMS 261 - 01', type: 'Lecture', start: '11:00', end: '11:55', loc: 'Earth and Space Sciences Bl 001', prof: 'Hyunkyung Lim', fullTitle: 'Applied Calculus III', exams: [{name: 'Final', date: '2026-12-9'}], syllabusUrl: 'https://drive.google.com/file/d/1V5rlV49xuCCt2xknu8T99Qa1uIiLrOAn/view?usp=sharing' },
+            { day: 'mon', title: 'AMS 261 - 01', type: 'Lecture', start: '11:00', end: '11:55', loc: 'Earth and Space Sciences Bl 001', prof: 'Hyunkyung Lim', fullTitle: 'Applied Calculus III', exams: [{name: 'Final', date: '2026-12-09'}], syllabusUrl: 'https://drive.google.com/file/d/1V5rlV49xuCCt2xknu8T99Qa1uIiLrOAn/view?usp=sharing' },
             { day: 'mon', title: 'AMS 261 - R01', type: 'Recitation', start: '14:00', end: '14:55', loc: 'Psychology A 137', prof: 'Andrew Deutsch', fullTitle: 'Applied Calculus III (Recitation)', exams: [], syllabusUrl: 'https://drive.google.com/file/d/1V5rlV49xuCCt2xknu8T99Qa1uIiLrOAn/view?usp=sharing' },
             { day: 'mon', title: 'CME 304 - 01', type: 'Lecture', start: '17:00', end: '18:20', loc: 'Staller Center for the Arts M0113', prof: 'Stefanos Nitodas', fullTitle: 'CME 304', exams: [], syllabusUrl: 'https://drive.google.com/file/d/15q0xKyGcf8HZIk9L6-x5jiGMiqU1vCl8/view?usp=sharing' },
             // Tuesday
@@ -1095,9 +1105,9 @@
                 
                 if (data.url && data.url.trim() !== '') {
                     let displayUrl = data.url.replace(/^https?:\/\//, '');
-                    dynamicContent.innerHTML = `<a href="${data.url.startsWith('http') ? data.url : 'https://' + data.url}" target="_blank" class="flex items-center gap-3 p-3 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-indigo-500 hover:ring-1 hover:ring-indigo-500 transition-all group">
-                        <div class="bg-indigo-50 dark:bg-indigo-900/50 p-2 rounded-md text-indigo-600 dark:text-indigo-400 group-hover:scale-110 transition-transform"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z" /><path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z" /></svg></div>
-                        <div class="overflow-hidden">
+                    dynamicContent.innerHTML = `<a href="${data.url.startsWith('http') ? data.url : 'https://' + data.url}" target="_blank" class="flex items-center gap-3 p-3 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-indigo-500 hover:ring-1 hover:ring-indigo-500 transition-all group min-w-0 overflow-hidden">
+                        <div class="bg-indigo-50 dark:bg-indigo-900/50 p-2 rounded-md text-indigo-600 dark:text-indigo-400 group-hover:scale-110 transition-transform flex-shrink-0"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z" /><path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z" /></svg></div>
+                        <div class="min-w-0 overflow-hidden flex-1">
                             <p class="text-xs font-bold text-gray-900 dark:text-white truncate">Open Event Link</p>
                             <p class="text-[10px] text-gray-500 truncate">${displayUrl}</p>
                         </div>
@@ -1445,7 +1455,7 @@
                             </div>
                         </div>
                         <h4 class="font-bold text-gray-900 dark:text-white text-lg mt-1 break-words">${a.title}</h4>
-                        ${a.notes ? `<div class="mt-2 text-sm text-gray-600 dark:text-gray-300 bg-white dark:bg-gray-750 p-3 rounded-lg border border-gray-100 dark:border-gray-700 whitespace-pre-wrap break-words">${a.notes}</div>` : ''}
+                        ${a.notes ? `<div class="mt-2 text-sm text-gray-600 dark:text-gray-300 bg-white dark:bg-gray-750 p-3 rounded-lg border border-gray-100 dark:border-gray-700 whitespace-pre-wrap break-words min-w-0">${a.notes}</div>` : ''}
                     </div>
                 `;
                 list.appendChild(item);
