@@ -6,12 +6,12 @@
     <title>My Fall Schedule</title>
     
     <!-- Standard Favicons -->
-    <link rel="icon" type="image/png" href="Pokemans_494.gif-2.png">
-    <link rel="shortcut icon" type="image/png" href="Pokemans_494.gif-2.png">
+    <link rel="icon" type="image/png" href="Pokemans_494.gif-2.png?v=2">
+    <link rel="shortcut icon" type="image/png" href="Pokemans_494.gif-2.png?v=2">
     
     <!-- Apple/Safari Specific Icons -->
-    <link rel="apple-touch-icon" sizes="180x180" href="Pokemans_494.gif-2.png">
-    <link rel="apple-touch-icon" href="Pokemans_494.gif-2.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="Pokemans_494.gif-2.png?v=2">
+    <link rel="apple-touch-icon" href="Pokemans_494.gif-2.png?v=2">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     
@@ -523,7 +523,7 @@
     <!-- MAIN LOGIC -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getFirestore, collection, addDoc, onSnapshot, query, deleteDoc, doc, updateDoc, getDocs } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, onSnapshot, query, deleteDoc, doc, updateDoc, getDocs, setDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
         import { getAuth, signInWithCustomToken, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
 
         // Global variables for the app
@@ -556,7 +556,7 @@
         };
         initCurrentWeek();
 
-        // --- STREAMING_CHUNK:Loading core data... ---
+        // --- STREAMING_CHUNK:Loading core static schedules... ---
         // --- DATA CONSTANTS ---
         const schedule = [
             // Monday
@@ -607,7 +607,7 @@
             'default': { light: 'bg-gray-100 border-gray-300 text-gray-900', dark: 'dark:bg-gray-800 dark:border-gray-600 dark:text-gray-300' }
         };
 
-        // --- STREAMING_CHUNK:Implementing study stats functions... ---
+        // --- STREAMING_CHUNK:Implementing study stats to use shared public path... ---
         // --- STUDY STATS ---
         async function fetchStudyStats() {
             if(!user || !db) return; 
@@ -615,7 +615,8 @@
             today.setHours(0,0,0,0);
             
             try {
-                const q = query(collection(db, 'artifacts', appId, 'users', user.uid, 'studySessions')); 
+                // CHANGED: Using 'public/data' path instead of private user path
+                const q = query(collection(db, 'artifacts', appId, 'public', 'data', 'studySessions')); 
                 const snapshot = await getDocs(q);
                 let totalMinutes = 0;
                 
@@ -643,7 +644,8 @@
         async function saveStudySession(durationMinutes) {
             if(!user || !db || durationMinutes < 1) return; 
             try {
-                await addDoc(collection(db, 'artifacts', appId, 'users', user.uid, 'studySessions'), { 
+                // CHANGED: Using 'public/data' path instead of private user path
+                await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'studySessions'), { 
                     duration: durationMinutes,
                     timestamp: new Date()
                 });
@@ -651,7 +653,7 @@
             } catch(e) { console.error("Save session error", e); }
         }
 
-        // --- STREAMING_CHUNK:Exposing UI toggle functions globally... ---
+        // --- STREAMING_CHUNK:Binding UI toggle actions globally... ---
         // --- EXPORTED WINDOW FUNCTIONS ---
         window.toggleDarkMode = () => {
             const isDark = document.documentElement.classList.toggle('dark');
@@ -809,6 +811,7 @@
             }
         };
         
+        // --- STREAMING_CHUNK:Writing event submissions to the shared public cloud space... ---
         window.handleEventSubmit = async (e) => {
             e.preventDefault();
             
@@ -873,15 +876,17 @@
                  return;
             }
 
-            if (!user) return;
+            if (!user) return; // Guard clause
 
             try {
                 if (id) {
                     const evData = eventsToCreate[0];
-                    await updateDoc(doc(db, 'artifacts', appId, 'users', user.uid, 'events', id), evData);
+                    // CHANGED: Using 'public/data' path
+                    await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'events', id), evData);
                 } else {
                     const promises = eventsToCreate.map(evData => {
-                        return addDoc(collection(db, 'artifacts', appId, 'users', user.uid, 'events'), {
+                        // CHANGED: Using 'public/data' path
+                        return addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'events'), {
                             ...evData, createdAt: new Date()
                         });
                     });
@@ -907,7 +912,8 @@
 
             if (user) {
                 try {
-                    await deleteDoc(doc(db, 'artifacts', appId, 'users', user.uid, 'events', eventId));
+                    // CHANGED: Using 'public/data' path
+                    await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'events', eventId));
                     window.closeCourseModal(null, true);
                 } catch (e) { console.error(e); }
             }
@@ -921,7 +927,7 @@
             }
         };
         
-        // --- STREAMING_CHUNK:Implementing assignment submission and Firebase sync logic... ---
+        // --- STREAMING_CHUNK:Writing assignment tasks to the shared public cloud space... ---
         window.handleAssignmentSubmit = async (e) => {
             e.preventDefault();
             
@@ -949,7 +955,7 @@
                  return;
             }
 
-            if (!user) return; // Wait for auth
+            if (!user) return; // Guard clause
 
             const id = document.getElementById('task-id').value;
             const title = document.getElementById('task-title').value;
@@ -961,11 +967,13 @@
             if (title && date) {
                 try {
                     if (id) {
-                        await updateDoc(doc(db, 'artifacts', appId, 'users', user.uid, 'assignments', id), {
+                        // CHANGED: Using 'public/data' path
+                        await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'assignments', id), {
                             title, course, type, date, notes
                         });
                     } else {
-                        await addDoc(collection(db, 'artifacts', appId, 'users', user.uid, 'assignments'), {
+                        // CHANGED: Using 'public/data' path
+                        await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'assignments'), {
                             title, course, type, date, notes, createdAt: new Date()
                         });
                     }
@@ -1039,13 +1047,14 @@
 
             if (assignmentToDelete && user) {
                 try {
-                    await deleteDoc(doc(db, 'artifacts', appId, 'users', user.uid, 'assignments', assignmentToDelete));
+                    // CHANGED: Using 'public/data' path
+                    await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'assignments', assignmentToDelete));
                     window.closeDeleteModal();
                 } catch (e) { console.error(e); }
             }
         };
         
-        // --- STREAMING_CHUNK:Adding course details modal rendering... ---
+        // --- STREAMING_CHUNK:Implementing course/event view modals... ---
         window.openCourseModal = (eventDataStr) => {
             const data = JSON.parse(decodeURIComponent(eventDataStr));
             const modal = document.getElementById('course-modal-overlay');
@@ -1159,7 +1168,7 @@
             }
         };
 
-        // --- STREAMING_CHUNK:Configuring the study mode timer logic... ---
+        // --- STREAMING_CHUNK:Adding study mode timer display and controls... ---
         // --- TIMER FUNCTIONS ---
         function updateTimerDisplay() {
             let total = 0;
@@ -1358,7 +1367,7 @@
             btn.classList.add('bg-indigo-600', 'hover:bg-indigo-700');
         };
 
-        // --- STREAMING_CHUNK:Populating the active schedule logic... ---
+        // --- STREAMING_CHUNK:Generating grid structures based on active data... ---
         // --- INTERNAL FUNCTIONS ---
         function updateTodayClasses() {
             const days = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'];
@@ -1462,7 +1471,7 @@
             });
         }
 
-        // --- STREAMING_CHUNK:Updating the live timeline features... ---
+        // --- STREAMING_CHUNK:Activating real-time clock indicator line... ---
         // Live Time Line Logic
         function updateCurrentTimeLine() {
             const now = new Date();
@@ -1613,7 +1622,7 @@
             });
         }
         
-        // --- STREAMING_CHUNK:Configuring the Firebase connection... ---
+        // --- STREAMING_CHUNK:Initializing global Firebase cloud syncing functionality... ---
         // --- FIREBASE INIT ---
         async function initApp() {
              // Try load local storage first
@@ -1668,8 +1677,12 @@
                         if (user) {
                             document.getElementById('auth-status').innerText = 'Syncing...';
                             document.getElementById('auth-status').classList.remove('hidden');
-                            setupFirestoreListeners();
-                            fetchStudyStats();
+                            
+                            // Run the one-time migration, then load the shared data
+                            migrateOldData().then(() => {
+                                setupFirestoreListeners();
+                                fetchStudyStats();
+                            });
                         }
                     });
                 } else {
@@ -1682,9 +1695,41 @@
             }
         }
 
-        function setupFirestoreListeners() {
+        //        async function migrateOldData() {
             if (!user || !db) return;
-            const q = query(collection(db, 'artifacts', appId, 'users', user.uid, 'assignments'));
+            // Only run this once per device to prevent repeating
+            if (localStorage.getItem('migrated_to_shared_v1')) return;
+
+            try {
+                // 1. Copy old assignments to the new shared folder
+                const oldAssignQ = query(collection(db, 'artifacts', appId, 'users', user.uid, 'assignments'));
+                const oldAssignSnap = await getDocs(oldAssignQ);
+                
+                oldAssignSnap.forEach(async (d) => {
+                    await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'assignments', d.id), d.data());
+                });
+
+                // 2. Copy old custom events to the new shared folder
+                const oldEventQ = query(collection(db, 'artifacts', appId, 'users', user.uid, 'events'));
+                const oldEventSnap = await getDocs(oldEventQ);
+                
+                oldEventSnap.forEach(async (d) => {
+                    await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'events', d.id), d.data());
+                });
+
+                // Mark as migrated so we don't do this every time you refresh
+                localStorage.setItem('migrated_to_shared_v1', 'true');
+                console.log("Successfully migrated old data to the shared cloud space!");
+            } catch (e) {
+                console.log("Migration skipped or failed:", e);
+            }
+        }
+
+        function setupFirestoreListeners() {
+            if (!user || !db) return; // Guard clause
+            
+            // CHANGED: Using 'public/data' path instead of private user path
+            const q = query(collection(db, 'artifacts', appId, 'public', 'data', 'assignments'));
             onSnapshot(q, (snapshot) => {
                 assignments = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
                 // Update local storage as backup
@@ -1700,8 +1745,8 @@
                  document.getElementById('auth-status').innerText = 'Local Mode';
             });
             
-            // Listen for custom schedule events
-            const qEvents = query(collection(db, 'artifacts', appId, 'users', user.uid, 'events'));
+            // CHANGED: Using 'public/data' path instead of private user path
+            const qEvents = query(collection(db, 'artifacts', appId, 'public', 'data', 'events'));
             onSnapshot(qEvents, (snapshot) => {
                 customEvents = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
                 localStorage.setItem('my_schedule_events', JSON.stringify(customEvents));
@@ -1709,7 +1754,6 @@
             });
         }
         
-        // --- STREAMING_CHUNK:Finalizing page load... ---
         // --- INIT ---
         const init = () => {
             if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
