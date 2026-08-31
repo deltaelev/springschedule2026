@@ -1695,7 +1695,7 @@
             }
         }
 
-        //        async function migrateOldData() {
+        async function migrateOldData() {
             if (!user || !db) return;
             // Only run this once per device to prevent repeating
             if (localStorage.getItem('migrated_to_shared_v1')) return;
