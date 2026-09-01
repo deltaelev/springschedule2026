@@ -140,9 +140,9 @@
                             <div id="header-fri" class="text-center font-semibold text-gray-700 dark:text-gray-300 text-sm flex flex-col justify-center leading-tight">Fri</div>
                         </div>
                         <div class="grid grid-cols-5 h-[1200px] relative" id="schedule-container">
-                            <div class="absolute inset-0 pointer-events-none grid grid-rows-[repeat(11,1fr)] w-full h-full z-0">
+                            <div class="absolute inset-0 pointer-events-none grid grid-rows-[repeat(14,1fr)] w-full h-full z-0">
                                 <!-- Grid Lines -->
-                                <div class="border-b border-gray-100 dark:border-gray-700 w-full"></div><div class="border-b border-gray-100 dark:border-gray-700 w-full"></div><div class="border-b border-gray-100 dark:border-gray-700 w-full"></div><div class="border-b border-gray-100 dark:border-gray-700 w-full"></div><div class="border-b border-gray-100 dark:border-gray-700 w-full"></div><div class="border-b border-gray-100 dark:border-gray-700 w-full"></div><div class="border-b border-gray-100 dark:border-gray-700 w-full"></div><div class="border-b border-gray-100 dark:border-gray-700 w-full"></div><div class="border-b border-gray-100 dark:border-gray-700 w-full"></div><div class="border-b border-gray-100 dark:border-gray-700 w-full"></div><div class="border-b border-gray-100 dark:border-gray-700 w-full"></div>
+                                <div class="border-b border-gray-100 dark:border-gray-700 w-full"></div><div class="border-b border-gray-100 dark:border-gray-700 w-full"></div><div class="border-b border-gray-100 dark:border-gray-700 w-full"></div><div class="border-b border-gray-100 dark:border-gray-700 w-full"></div><div class="border-b border-gray-100 dark:border-gray-700 w-full"></div><div class="border-b border-gray-100 dark:border-gray-700 w-full"></div><div class="border-b border-gray-100 dark:border-gray-700 w-full"></div><div class="border-b border-gray-100 dark:border-gray-700 w-full"></div><div class="border-b border-gray-100 dark:border-gray-700 w-full"></div><div class="border-b border-gray-100 dark:border-gray-700 w-full"></div><div class="border-b border-gray-100 dark:border-gray-700 w-full"></div><div class="border-b border-gray-100 dark:border-gray-700 w-full"></div><div class="border-b border-gray-100 dark:border-gray-700 w-full"></div><div class="border-b border-gray-100 dark:border-gray-700 w-full"></div>
                             </div>
                             <div id="current-time-line" class="absolute w-full border-t-2 border-red-500 z-25 hidden shadow-[0_2px_5px_rgba(239,68,68,0.5)]"></div>
                             <div class="relative border-r border-gray-100 dark:border-gray-700 h-full hover:bg-gray-50/30 dark:hover:bg-gray-700/30 transition-colors" id="col-mon"></div>
@@ -544,7 +544,7 @@
         const FULL_DASH_ARRAY = 565.48;
         
         const START_HOUR = 8;
-        const END_HOUR = 19;
+        const END_HOUR = 22; // Extended to 10 PM
         const TOTAL_MINUTES = (END_HOUR - START_HOUR) * 60;
 
         const initCurrentWeek = () => {
