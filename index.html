@@ -1624,6 +1624,11 @@
         }
         
         // --- STREAMING_CHUNK:Configuring the Firebase connection... ---
+        async function initApp() {
+             // Try load local storage first
+             const saved = localStorage.getItem('my_schedule_data');
+             if (saved) {
+                try { assignments = JSON.parse(saved); } catch(e) {}
              }
              const savedEvents = localStorage.getItem('my_schedule_events');
              if (savedEvents) {
