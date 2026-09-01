@@ -125,8 +125,8 @@
                     <div class="w-16 flex-shrink-0 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 sticky left-0 z-[45] transition-colors duration-200">
                         <!-- Top-Left Corner Block (Sticky top-0 to prevent clipping) -->
                         <div class="h-10 bg-gray-50 dark:bg-gray-850 sticky top-0 z-[55] border-b border-gray-100 dark:border-gray-700"></div> 
-                        <!-- Grid height set to 1200px to prevent cramped squishing -->
-                        <div id="time-labels" class="relative" style="height: 1200px;"></div>
+                        <!-- Grid height set to 1600px to perfectly match the original padding proportions -->
+                        <div id="time-labels" class="relative" style="height: 1600px;"></div>
                     </div>
 
                     <!-- Right Section (Grid) -->
@@ -139,7 +139,7 @@
                             <div id="header-thu" class="text-center font-semibold text-gray-700 dark:text-gray-300 text-sm flex flex-col justify-center leading-tight">Thu</div>
                             <div id="header-fri" class="text-center font-semibold text-gray-700 dark:text-gray-300 text-sm flex flex-col justify-center leading-tight">Fri</div>
                         </div>
-                        <div class="grid grid-cols-5 h-[1200px] relative" id="schedule-container">
+                        <div class="grid grid-cols-5 h-[1600px] relative" id="schedule-container">
                             <div class="absolute inset-0 pointer-events-none grid grid-rows-[repeat(14,1fr)] w-full h-full z-0">
                                 <!-- Grid Lines -->
                                 <div class="border-b border-gray-100 dark:border-gray-700 w-full"></div><div class="border-b border-gray-100 dark:border-gray-700 w-full"></div><div class="border-b border-gray-100 dark:border-gray-700 w-full"></div><div class="border-b border-gray-100 dark:border-gray-700 w-full"></div><div class="border-b border-gray-100 dark:border-gray-700 w-full"></div><div class="border-b border-gray-100 dark:border-gray-700 w-full"></div><div class="border-b border-gray-100 dark:border-gray-700 w-full"></div><div class="border-b border-gray-100 dark:border-gray-700 w-full"></div><div class="border-b border-gray-100 dark:border-gray-700 w-full"></div><div class="border-b border-gray-100 dark:border-gray-700 w-full"></div><div class="border-b border-gray-100 dark:border-gray-700 w-full"></div><div class="border-b border-gray-100 dark:border-gray-700 w-full"></div><div class="border-b border-gray-100 dark:border-gray-700 w-full"></div><div class="border-b border-gray-100 dark:border-gray-700 w-full"></div>
@@ -1623,13 +1623,7 @@
             });
         }
         
-        // --- STREAMING_CHUNK:Initializing global Firebase cloud syncing functionality... ---
-        // --- FIREBASE INIT ---
-        async function initApp() {
-             // Try load local storage first
-             const saved = localStorage.getItem('my_schedule_data');
-             if (saved) {
-                try { assignments = JSON.parse(saved); } catch(e) {}
+        // --- STREAMING_CHUNK:Configuring the Firebase connection... ---
              }
              const savedEvents = localStorage.getItem('my_schedule_events');
              if (savedEvents) {
